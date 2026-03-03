@@ -5,7 +5,7 @@
                 Perfil de <span class="text-[#39A900]">{{ $user->name }}</span>
             </h2>
             <p class="text-slate-600 text-[10px] uppercase font-black tracking-widest mt-1">
-                Historial del Aprendiz <span class="mx-2 text-slate-300">|</span> Doc: {{ $user->documento }}
+                Historial de {{ $user->hasRole('Lider Admin') ? 'Administrador' : 'Aprendiz' }} <span class="mx-2 text-slate-300">|</span> Doc: {{ $user->documento }}
             </p>
         </div>
         <a href="{{ route('admin.usuarios.index') }}"

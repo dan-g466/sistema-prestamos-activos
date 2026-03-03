@@ -39,7 +39,9 @@
                                             <div class="font-black text-[#00324D] uppercase group-hover/row:text-[#39A900] transition-colors leading-tight">
                                                 {{ $usuario->name }}
                                             </div>
-                                            <div class="text-[9px] text-slate-400 font-bold tracking-wider">Aprendiz SENA</div>
+                                            <div class="text-[9px] text-slate-400 font-bold tracking-wider">
+                                                {{ $usuario->hasRole('Lider Admin') ? 'Administrador' : 'Aprendiz SENA' }}
+                                            </div>
                                         </div>
                                     </div>
                                 </td>

@@ -8,7 +8,7 @@
                     <span class="text-[9px] font-black text-amber-600 uppercase tracking-widest">En Trámite</span>
                 </div>
                 <h2 class="text-3xl font-black text-[#00324D] tracking-tighter uppercase">Mis Solicitudes</h2>
-                <p class="text-slate-400 text-xs font-medium mt-1">Sigue el estado de tus peticiones en revisión o aprobadas.</p>
+                <p class="text-slate-400 text-xs font-medium mt-1">Sigue el estado de todas tus solicitudes vigentes y préstamos en curso.</p>
             </div>
             <a href="{{ route('user.catalogo') }}" class="px-6 py-3 bg-[#39A900] text-white text-[10px] font-black uppercase tracking-widest rounded-2xl shadow-xl shadow-[#39A900]/20 hover:shadow-[#39A900]/40 transition-all active:scale-95 flex items-center justify-center gap-2">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" /></svg>
@@ -17,6 +17,24 @@
         </div>
 
         @if($prestamos->count() > 0)
+            {{-- Banner Informativo para Préstamos por Confirmar --}}
+            @if($prestamos->where('estado', 'Por Confirmar')->count() > 0)
+                <div class="mb-6 animate-in fade-in slide-in-from-left-4 duration-700">
+                    <div class="bg-gradient-to-r from-indigo-600 to-blue-700 rounded-3xl p-6 shadow-xl shadow-indigo-200 relative overflow-hidden flex items-center gap-6">
+                        <div class="absolute right-0 top-0 -mr-6 -mt-6 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
+                        <div class="w-12 h-12 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center text-white shrink-0 shadow-inner">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                        </div>
+                        <div>
+                            <h4 class="text-white font-black text-sm uppercase tracking-widest leading-none mb-1">Información de Entrega</h4>
+                            <p class="text-indigo-100 text-[11px] font-bold leading-relaxed max-w-2xl">
+                                Tienes elementos entregados que están **pendientes de confirmación administrativa**. Una vez el administrador verifique el estado físico, el préstamo se moverá automáticamente a tu historial.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            @endif
+
             {{-- Listado Horizontal Premium --}}
             <div class="bg-white rounded-[2.5rem] shadow-2xl shadow-slate-200/40 border border-slate-100 overflow-hidden animate-in fade-in slide-in-from-bottom-6 duration-1000 delay-200">
                 <div class="overflow-x-auto">
@@ -76,13 +94,18 @@
                                                 'Aceptado'  => 'bg-blue-50 text-blue-600 border-blue-100',
                                                 'Activo'    => 'bg-green-50 text-[#39A900] border-green-100',
                                                 'Vencido'   => 'bg-rose-50 text-rose-600 border-rose-100',
+                                                'Por Confirmar' => 'bg-indigo-50 text-indigo-600 border-indigo-100',
                                             ];
                                             $currentStyle = $statusStyles[$p->estado] ?? 'bg-slate-50 text-slate-600 border-slate-100';
                                         @endphp
-                                        <span class="px-2.5 py-1 {{ $currentStyle }} border rounded-full text-[8px] font-black uppercase tracking-widest inline-flex items-center gap-1.5">
-                                            <span class="w-1 h-1 rounded-full bg-current {{ $p->estado === 'Activo' ? 'animate-pulse' : '' }}"></span>
+                                        <span class="px-2.5 py-1 {{ $currentStyle }} border rounded-full text-[8px] font-black uppercase tracking-widest inline-flex items-center gap-1.5"
+                                              @if($p->estado === 'Por Confirmar') title="El administrador debe confirmar el recibo físico para mover al historial" @endif>
+                                            <span class="w-1 h-1 rounded-full bg-current {{ in_array($p->estado, ['Activo', 'Por Confirmar']) ? 'animate-pulse' : '' }}"></span>
                                             {{ $p->estado }}
                                         </span>
+                                        @if($p->estado === 'Por Confirmar')
+                                            <p class="text-[7px] font-bold text-indigo-400 mt-1 italic leading-tight">Pendiente de confirmación administrativa</p>
+                                        @endif
                                     </td>
                                     <td class="px-8 py-4 text-right">
                                         <a href="{{ route('user.prestamos.show', $p) }}" class="inline-flex items-center gap-2 px-4 py-2 bg-slate-900 text-white text-[9px] font-black uppercase tracking-widest rounded-xl hover:bg-[#00324D] hover:shadow-lg transition-all active:scale-95 group/btn">

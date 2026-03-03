@@ -14,7 +14,7 @@ class PrestamoController extends Controller
     public function solicitudes()
     {
         $prestamos = Prestamo::where('user_id', Auth::id())
-            ->whereIn('estado', ['Pendiente', 'Aceptado'])
+            ->whereIn('estado', ['Pendiente', 'Aceptado', 'Activo', 'Vencido', 'Por Confirmar'])
             ->with(['elemento.categoria'])
             ->orderBy('created_at', 'desc')
             ->paginate(8);
@@ -79,6 +79,6 @@ class PrestamoController extends Controller
         // Marcar equipo como prestado inmediatamente para que no aparezca en el catálogo (HU-LU-01)
         $elemento->update(['estado' => 'Prestado']);
 
-        return redirect()->back()->with('success', '¡Solicitud enviada con éxito! Revisa tu Panel para ver el estado.');
+        return redirect()->route('user.prestamos.index')->with('success', '¡Solicitud enviada con éxito! Puedes ver el estado de tu trámite aquí.');
     }
 }

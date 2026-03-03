@@ -126,6 +126,7 @@
                                                 'Pendiente' => ['bg' => 'bg-amber-100', 'text' => 'text-amber-600', 'dot' => 'bg-amber-400'],
                                                 'Aceptado'  => ['bg' => 'bg-green-100', 'text' => 'text-green-700', 'dot' => 'bg-green-500'],
                                                 'Activo'    => ['bg' => 'bg-[#39A900]/10', 'text' => 'text-[#39A900]', 'dot' => 'bg-[#39A900]'],
+                                                'Por Confirmar' => ['bg' => 'bg-indigo-100', 'text' => 'text-indigo-600', 'dot' => 'bg-indigo-500'],
                                                 'Devuelto'  => ['bg' => 'bg-slate-100', 'text' => 'text-slate-400', 'dot' => 'bg-slate-300'],
                                                 'Rechazado' => ['bg' => 'bg-rose-100', 'text' => 'text-rose-600', 'dot' => 'bg-rose-400'],
                                                 default     => ['bg' => 'bg-slate-50', 'text' => 'text-slate-400', 'dot' => 'bg-slate-200']
@@ -187,6 +188,14 @@
                                                 <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M16 15L12 19M12 19L8 15M12 19V9M5 20H19"/></svg>
                                                 Recibir
                                             </button>
+                                        @elseif($prestamo->estado == 'Por Confirmar')
+                                            <form action="{{ route('admin.prestamos.confirmar', $prestamo) }}" method="POST">
+                                                @csrf
+                                                <button type="submit" class="p-1 px-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 font-black text-[9px] uppercase tracking-widest transition-all shadow-sm active:scale-95 flex items-center gap-1.5" title="Confirmar Devolución">
+                                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                                                    Confirmar
+                                                </button>
+                                            </form>
                                         @endif
 
                                         <div class="h-4 w-[1px] bg-slate-100 mx-0.5"></div>

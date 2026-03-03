@@ -1,7 +1,7 @@
 <x-user-layout>
     <div class="h-[calc(100vh-120px)] flex flex-col overflow-hidden">
         {{-- Banner de Bienvenida Estilo Vidrio (Glassmorphism Pro) --}}
-        <div class="relative shrink-0 overflow-hidden bg-gradient-to-br from-[#00324D] via-[#002538] to-[#00324D] rounded-[3rem] p-6 md:p-10 mb-8 shadow-[0_25px_80px_-20px_rgba(57,169,0,0.3)] animate-in fade-in slide-in-from-top-10 duration-1000 group">
+        <div class="relative shrink-0 overflow-hidden bg-gradient-to-br from-[#39A900] via-[#39A900] to-[#39A900] rounded-[3rem] p-6 md:p-10 mb-8 shadow-[0_25px_80px_-20px_rgba(57,169,0,0.3)] animate-in fade-in slide-in-from-top-10 duration-1000 group">
             {{-- Elementos Orgánicos de Fondo --}}
             <div class="absolute -right-20 -top-20 w-[30rem] h-[30rem] bg-[#39A900]/10 rounded-full blur-[100px] mix-blend-screen animate-pulse"></div>
             
@@ -20,10 +20,10 @@
                     </div>
                     
                     <h1 class="text-3xl md:text-5xl font-black text-white tracking-tighter leading-[0.9] mb-4">
-                        ¡Hola, <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#39A900] to-[#A5CC19]">{{ explode(' ', Auth::user()->name)[0] }}</span>!
+                        ¡Hola, <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#ffffff] to-[#ffffff]">{{ explode(' ', Auth::user()->name)[0] }}</span>!
                     </h1>
                     
-                    <p class="text-white/40 font-medium text-sm leading-relaxed max-w-xl mb-6 italic">
+                    <p class="text-white font-medium text-sm leading-relaxed max-w-xl mb-6 italic">
                         Gestiona tus recursos formativos con precisión. Todo lo que necesitas en una sola vista.
                     </p>
                     
@@ -57,7 +57,7 @@
                         </div>
                         <div class="text-center">
                             <h4 class="text-sm font-black text-white tracking-tight leading-tight">{{ Auth::user()->name }}</h4>
-                            <span class="text-[8px] font-black text-[#39A900] uppercase tracking-[0.3em]">Gestión {{ date('Y') }}</span>
+                            <span class="text-[8px] font-black text-[#ffffff] uppercase tracking-[0.3em]">Gestión {{ date('Y') }}</span>
                         </div>
                     </div>
                 </div>

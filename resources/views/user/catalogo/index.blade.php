@@ -10,11 +10,11 @@
     }">
 
         {{-- ─── Hero / Search Bar ─── --}}
-        <div class="bg-gradient-to-br from-[#00324D] to-[#004d75] py-10 px-4">
+        <div class="bg-gradient-to-br from-[#00ff44] to-[#004d75] py-10 px-4">
             <div class="max-w-5xl mx-auto text-center">
                 <p class="text-[10px] font-black text-white/50 uppercase tracking-[0.3em] mb-1">Centro de Gestión</p>
                 <h1 class="text-2xl md:text-3xl font-black text-white mb-6 tracking-tight">
-                    Catálogo de <span class="text-[#39A900]">Elementos</span>
+                    Catálogo de <span class="text-[#ffffff]">Elementos</span>
                 </h1>
 
                 {{-- Barra de búsqueda --}}
@@ -54,7 +54,7 @@
 
                 <a href="{{ route('user.catalogo', array_merge(request()->only('search'), ['categoria' => ''])) }}"
                    class="px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-wide transition-all border
-                          {{ !request('categoria') ? 'bg-[#00324D] text-white border-[#00324D] shadow-md' : 'bg-white text-slate-500 border-slate-200 hover:border-[#39A900] hover:text-[#39A900]' }}">
+                          {{ !request('categoria') ? 'bg-[#004d0f] text-white border-[#00324D] shadow-md' : 'bg-white text-slate-500 border-slate-200 hover:border-[#39A900] hover:text-[#39A900]' }}">
                     Todos
                 </a>
 

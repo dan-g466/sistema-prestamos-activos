@@ -59,6 +59,7 @@ Route::middleware(['auth', 'role:Lider Admin'])->prefix('admin')->name('admin.')
     Route::post('/prestamos/{prestamo}/entregar', [AdminPrestamo::class, 'entregar'])->name('prestamos.entregar');
     Route::post('/prestamos/{prestamo}/rechazar', [AdminPrestamo::class, 'rechazar'])->name('prestamos.rechazar');
     Route::post('/prestamos/{prestamo}/finalizar', [AdminPrestamo::class, 'finalizar'])->name('prestamos.finalizar');
+    Route::post('/prestamos/{prestamo}/confirmar', [AdminPrestamo::class, 'confirmarDevolucion'])->name('prestamos.confirmar');
 
     // 4. Gestión de Usuarios y Sanciones
     Route::resource('usuarios', UserController::class)

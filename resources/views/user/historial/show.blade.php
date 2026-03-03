@@ -26,10 +26,11 @@
                 <div class="relative">
                     @php
                         $pasos = [
-                            ['id' => 'Pendiente', 'title' => 'Revisión',   'icon' => 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2'],
-                            ['id' => 'Aceptado',  'title' => 'Aprobado',   'icon' => 'M5 13l4 4L19 7'],
-                            ['id' => 'Activo',    'title' => 'En Uso',     'icon' => 'M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z'],
-                            ['id' => 'Devuelto',  'title' => 'Finalizado', 'icon' => 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'],
+                            ['id' => 'Pendiente',     'title' => 'Revisión',   'icon' => 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2'],
+                            ['id' => 'Aceptado',      'title' => 'Aprobado',   'icon' => 'M5 13l4 4L19 7'],
+                            ['id' => 'Activo',        'title' => 'En Uso',     'icon' => 'M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z'],
+                            ['id' => 'Por Confirmar', 'title' => 'Devuelto',   'icon' => 'M16 15L12 19M12 19L8 15M12 19V9M5 20H19'],
+                            ['id' => 'Devuelto',      'title' => 'Historial',  'icon' => 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'],
                         ];
                         $currIdx = -1;
                         foreach($pasos as $i => $paso) if($prestamo->estado == $paso['id']) $currIdx = $i;
@@ -53,7 +54,10 @@
                                 
                                 $circleBase = "w-12 h-12 rounded-2xl flex items-center justify-center transition-all duration-700 shadow-lg border-4 border-white";
                                 if($isPast) $iconStyle = "$circleBase bg-[#39A900] text-white";
-                                elseif($isCurrent) $iconStyle = "$circleBase bg-[#00324D] text-white ring-8 ring-[#00324D]/5 scale-110";
+                                elseif($isCurrent) {
+                                    $color = ($prestamo->estado == 'Por Confirmar') ? 'bg-indigo-600 ring-indigo-600/5' : 'bg-[#00324D] ring-[#00324D]/5';
+                                    $iconStyle = "$circleBase $color text-white scale-110";
+                                }
                                 else $iconStyle = "$circleBase bg-white text-slate-200 border-slate-50";
                             @endphp
 
@@ -65,7 +69,7 @@
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="{{ $paso['icon'] }}" /></svg>
                                 </div>
                                 <div class="text-center">
-                                    <p class="text-[9px] font-black uppercase tracking-widest {{ $isCurrent ? 'text-[#00324D]' : ($isPast ? 'text-[#39A900]' : 'text-slate-300') }}">
+                                    <p class="text-[9px] font-black uppercase tracking-widest {{ $isCurrent ? ($prestamo->estado == 'Por Confirmar' ? 'text-indigo-600' : 'text-[#00324D]') : ($isPast ? 'text-[#39A900]' : 'text-slate-300') }}">
                                         {{ $paso['title'] }}
                                     </p>
                                 </div>
@@ -151,17 +155,34 @@
 
             {{-- Observaciones y Advertencia de Devolución --}}
             <div class="lg:col-span-2 space-y-6 animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-500">
-                {{-- Advertencia Preventiva para Préstamos en Poder --}}
-                @if(in_array($prestamo->estado, ['Activo', 'Vencido']))
-                    <div class="bg-amber-50 rounded-[2rem] p-6 border border-amber-200 shadow-xl shadow-amber-900/5 flex items-center gap-6 relative overflow-hidden group">
-                        <div class="absolute right-0 top-0 w-32 h-full bg-gradient-to-l from-amber-100/50 to-transparent"></div>
-                        <div class="w-12 h-12 bg-amber-500 rounded-2xl flex items-center justify-center text-white shadow-lg shrink-0 animate-pulse">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                {{-- Advertencia Preventiva para Préstamos en Poder o en Confirmación --}}
+                @if(in_array($prestamo->estado, ['Activo', 'Vencido', 'Por Confirmar']))
+                    @php
+                        $isConfirming = $prestamo->estado === 'Por Confirmar';
+                        $bgColor = $isConfirming ? 'bg-indigo-50 border-indigo-200 shadow-indigo-900/5' : 'bg-amber-50 border-amber-200 shadow-amber-900/5';
+                        $iconColor = $isConfirming ? 'bg-indigo-600' : 'bg-amber-500';
+                        $textColor = $isConfirming ? 'text-indigo-600' : 'text-amber-600';
+                        $mainTextColor = $isConfirming ? 'text-indigo-900' : 'text-amber-900';
+                    @endphp
+                    <div class="{{ $bgColor }} rounded-[2rem] p-6 border shadow-xl flex items-center gap-6 relative overflow-hidden group">
+                        <div class="absolute right-0 top-0 w-32 h-full bg-gradient-to-l {{ $isConfirming ? 'from-indigo-100/50' : 'from-amber-100/50' }} to-transparent"></div>
+                        <div class="w-12 h-12 {{ $iconColor }} rounded-2xl flex items-center justify-center text-white shadow-lg shrink-0 {{ !$isConfirming ? 'animate-pulse' : '' }}">
+                            @if($isConfirming)
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+                            @else
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                            @endif
                         </div>
-                        <div>
-                            <p class="text-[10px] font-black text-amber-600 uppercase tracking-widest mb-1">Recordatorio de Seguridad</p>
-                            <p class="text-[12px] font-bold text-amber-900 leading-relaxed">
-                                Por favor devolver el elemento en el tiempo estimado que se generó en la solicitud para que el administrador confirme la entrega y <span class="text-rose-600 underline decoration-rose-300">no sea sancionado</span>.
+                        <div class="z-10">
+                            <p class="text-[10px] font-black {{ $textColor }} uppercase tracking-widest mb-1">
+                                {{ $isConfirming ? 'Proceso de Devolución' : 'Recordatorio de Seguridad' }}
+                            </p>
+                            <p class="text-[12px] font-bold {{ $mainTextColor }} leading-relaxed">
+                                @if($isConfirming)
+                                    Has entregado los elementos. <strong>El administrador debe confirmar la recepción física</strong> para que el préstamo se mueva oficialmente a tu historial.
+                                @else
+                                    Por favor devolver el elemento en el tiempo estimado que se generó en la solicitud para que el administrador confirme la entrega y <span class="text-rose-600 underline decoration-rose-300">no sea sancionado</span>.
+                                @endif
                             </p>
                         </div>
                     </div>

@@ -101,7 +101,7 @@ class PrestamoController extends Controller
     }
 
     /**
-     * Finaliza un préstamo (Devolución).
+     * Registra que el equipo ha sido entregado pero está pendiente de revisión (Devolución iniciada).
      */
     public function finalizar(Request $request, Prestamo $prestamo)
     {
@@ -109,20 +109,49 @@ class PrestamoController extends Controller
 
         $prestamo->update([
             'fecha_devolucion_real' => now(),
-            'estado' => 'Devuelto',
+            'estado' => 'Por Confirmar',
             'observaciones' => $request->observaciones
         ]);
 
-        $prestamo->elemento->update(['estado' => 'Disponible']);
+        // El equipo permanece como 'Prestado' o pasa a un estado intermedio si existiera, 
+        // pero NO vuelve a 'Disponible' hasta la confirmación final.
 
         Movimiento::create([
             'elemento_id' => $prestamo->elemento_id,
             'user_id' => Auth::id(),
-            'tipo_movimiento' => 'Devolución',
-            'descripcion' => "Equipo recibido de: " . $prestamo->user->name . ". Obs: " . ($request->observaciones ?? 'Sin novedad'),
+            'tipo_movimiento' => 'Devolución Iniciada',
+            'descripcion' => "Equipo entregado por: " . $prestamo->user->name . ". Pendiente de confirmación por el administrador.",
         ]);
 
-        return back()->with('success', 'Equipo reintegrado al inventario.');
+        return back()->with('success', 'La entrega ha sido registrada. Por favor, confirme el estado del equipo para finalizar el proceso.');
+    }
+
+    /**
+     * Confirma la recepción definitiva del equipo y lo reintegra al inventario.
+     */
+    public function confirmarDevolucion(Prestamo $prestamo)
+    {
+        if ($prestamo->estado !== 'Por Confirmar') {
+            return back()->with('error', 'Solo se pueden confirmar devoluciones en estado "Por Confirmar".');
+        }
+
+        $prestamo->update([
+            'estado' => 'Devuelto'
+        ]);
+
+        $prestamo->elemento->update(['estado' => 'Disponible']);
+
+        // Notificar al usuario que su devolución fue confirmada y ya está en el historial
+        $prestamo->user->notify(new PrestamoStatusUpdated($prestamo, "El administrador ha confirmado la recepción del equipo '{$prestamo->elemento->nombre}'. El préstamo ha sido finalizado y ya puedes consultarlo en tu historial."));
+
+        Movimiento::create([
+            'elemento_id' => $prestamo->elemento_id,
+            'user_id' => Auth::id(),
+            'tipo_movimiento' => 'Devolución Confirmada',
+            'descripcion' => "Equipo recibido y confirmado de: " . $prestamo->user->name . ". Reintegrado al inventario.",
+        ]);
+
+        return back()->with('success', 'Préstamo finalizado exitosamente. El equipo ya está disponible en el inventario.');
     }
 
     /**
@@ -148,7 +177,7 @@ class PrestamoController extends Controller
     public function update(Request $request, Prestamo $prestamo)
     {
         $request->validate([
-            'estado' => 'required|in:Pendiente,Aceptado,Activo,Devuelto,Rechazado',
+            'estado' => 'required|in:Pendiente,Aceptado,Activo,Por Confirmar,Devuelto,Rechazado',
             'fecha_devolucion_esperada' => 'required|date',
             'fecha_devolucion_real' => 'nullable|date',
             'observaciones' => 'nullable|string|max:500',

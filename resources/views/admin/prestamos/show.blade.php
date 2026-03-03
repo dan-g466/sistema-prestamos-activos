@@ -3,8 +3,9 @@
         $estadoConfig = match($prestamo->estado) {
             'Pendiente' => ['bg' => 'from-amber-400 to-amber-500', 'light' => 'bg-amber-50', 'text' => 'text-amber-600', 'icon' => 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z'], // Ambar suave para solicitud
             'Aceptado'  => ['bg' => 'from-[#39A900]/80 to-[#39A900]', 'light' => 'bg-green-50', 'text' => 'text-[#39A900]', 'icon' => 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'], // Verde medio para trámite
-            'Activo'    => ['bg' => 'from-[#39A900] to-[#39A900]', 'light' => 'bg-green-50', 'text' => 'text-[#39A900]', 'icon' => 'M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4'], // Verde puro institucional para préstamo activo
-            'Devuelto'  => ['bg' => 'from-[#39A900] to-[#2E7D32]', 'light' => 'bg-green-50', 'text' => 'text-[#39A900]', 'icon' => 'M5 13l4 4L19 7'], // Verde institucional para devuelto
+            'Activo'        => ['bg' => 'from-[#39A900] to-[#39A900]', 'light' => 'bg-green-50', 'text' => 'text-[#39A900]', 'icon' => 'M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4'], // Verde puro institucional para préstamo activo
+            'Por Confirmar' => ['bg' => 'from-indigo-500 to-indigo-600', 'light' => 'bg-indigo-50', 'text' => 'text-indigo-600', 'icon' => 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4'], // Indigo para pendiente de revisión
+            'Devuelto'      => ['bg' => 'from-[#39A900] to-[#2E7D32]', 'light' => 'bg-green-50', 'text' => 'text-[#39A900]', 'icon' => 'M5 13l4 4L19 7'], // Verde institucional para devuelto
             'Rechazado' => ['bg' => 'from-rose-500 to-rose-600', 'light' => 'bg-rose-50', 'text' => 'text-rose-600', 'icon' => 'M6 18L18 6M6 6l12 12'],
             default     => ['bg' => 'from-slate-400 to-slate-500', 'light' => 'bg-slate-50', 'text' => 'text-slate-600', 'icon' => 'M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z']
         };
@@ -237,7 +238,7 @@
     </div>
 
     {{-- Bottom Action Center Compact --}}
-    @if(in_array($prestamo->estado, ['Pendiente', 'Aceptado', 'Activo']))
+    @if(in_array($prestamo->estado, ['Pendiente', 'Aceptado', 'Activo', 'Por Confirmar']))
         <div class="bg-white border border-slate-100 rounded-2xl p-3 shadow-md flex items-center justify-between gap-4">
             <div class="flex items-center gap-3">
                 <div class="h-8 w-8 rounded-lg bg-green-50 text-[#39A900] flex items-center justify-center shrink-0">
@@ -278,7 +279,17 @@
                     </button>
                 @endif
 
-                @if(in_array($prestamo->estado, ['Pendiente', 'Aceptado']))
+                @if($prestamo->estado == 'Por Confirmar')
+                    <form action="{{ route('admin.prestamos.confirmar', $prestamo) }}" method="POST">
+                        @csrf
+                        <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded-lg text-[9px] font-black uppercase tracking-widest hover:bg-indigo-700 transition-all active:scale-95 shadow-lg shadow-indigo-100 flex items-center gap-1.5">
+                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            Confirmar Recibido
+                        </button>
+                    </form>
+                @endif
+
+                @if(in_array($prestamo->estado, ['Pendiente', 'Aceptado', 'Por Confirmar']))
                     <form action="{{ route('admin.prestamos.rechazar', $prestamo) }}" method="POST">
                         @csrf
                         <button type="submit" class="px-4 py-2 bg-rose-50 text-rose-600 border border-rose-100 rounded-lg text-[9px] font-black uppercase tracking-widest hover:bg-rose-600 hover:text-white transition-all active:scale-95 group">
