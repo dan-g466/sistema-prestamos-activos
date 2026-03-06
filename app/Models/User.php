@@ -72,4 +72,27 @@ class User extends Authenticatable
     {
         return $this->hasMany(Sancion::class);
     }
+
+    /**
+     * Verifica dinámicamente si el usuario tiene una sanción activa por fecha.
+     */
+    public function estaSancionado(): bool
+    {
+        return $this->sancionado || $this->sanciones()
+            ->where('estado', 'Activa')
+            ->where('fecha_fin', '>=', now()->startOfDay())
+            ->exists();
+    }
+
+    /**
+     * Obtiene la sanción activa actual del usuario para mostrar información.
+     */
+    public function obtenerSancionActiva()
+    {
+        return $this->sanciones()
+            ->where('estado', 'Activa')
+            ->where('fecha_fin', '>=', now()->startOfDay())
+            ->orderBy('fecha_fin', 'desc')
+            ->first();
+    }
 }

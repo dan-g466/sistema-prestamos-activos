@@ -8,7 +8,7 @@
                     <span class="text-[9px] font-black text-amber-600 uppercase tracking-widest">En Trámite</span>
                 </div>
                 <h2 class="text-3xl font-black text-[#00324D] tracking-tighter uppercase">Mis Solicitudes</h2>
-                <p class="text-slate-400 text-xs font-medium mt-1">Sigue el estado de todas tus solicitudes vigentes y préstamos en curso.</p>
+                <p class="text-slate-400 text-xs font-medium mt-1">Sigue el estado de tus solicitudes en trámite y procesos de confirmación de entrega.</p>
             </div>
             <a href="{{ route('user.catalogo') }}" class="px-6 py-3 bg-[#39A900] text-white text-[10px] font-black uppercase tracking-widest rounded-2xl shadow-xl shadow-[#39A900]/20 hover:shadow-[#39A900]/40 transition-all active:scale-95 flex items-center justify-center gap-2">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" /></svg>

@@ -30,7 +30,7 @@
                 <table class="min-w-full divide-y divide-slate-100">
                     <thead class="bg-slate-50/50">
                         <tr>
-                            <th class="px-6 py-2 text-left text-[8px] font-black text-slate-600 uppercase tracking-widest">Aprendiz</th>
+                            <th class="px-6 py-2 text-left text-[8px] font-black text-slate-600 uppercase tracking-widest">Usuario Sena</th>
                             <th class="px-6 py-2 text-left text-[8px] font-black text-slate-600 uppercase tracking-widest">Motivo</th>
                             <th class="px-6 py-2 text-left text-[8px] font-black text-slate-600 uppercase tracking-widest">Vigencia</th>
                             <th class="px-6 py-2 text-left text-[8px] font-black text-slate-600 uppercase tracking-widest">Estado</th>
@@ -90,7 +90,7 @@
                                               method="POST" class="inline">
                                             @csrf @method('DELETE')
                                             <button type="button"
-                                                    onclick="confirmDelete('sancion-delete-{{ $sancion->id }}', 'Se levantará la sanción de {{ addslashes($sancion->user->name ?? "este aprendiz") }} del sistema.')"
+                                                    onclick="confirmDelete('sancion-delete-{{ $sancion->id }}', 'Se levantará la sanción de {{ addslashes($sancion->user->name ?? "este usuario") }} del sistema.')"
                                                     class="p-1.5 bg-rose-50 text-rose-500 hover:bg-rose-500 hover:text-white rounded-lg transition-all border border-rose-100 hover:border-rose-500 shadow-sm active:scale-90"
                                                     title="Levantar Sanción">
                                                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>

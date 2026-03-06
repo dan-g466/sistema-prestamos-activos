@@ -6,10 +6,10 @@
             </div>
             <div>
                 <h2 class="font-black text-2xl text-[#00324D] leading-tight tracking-tight">
-                    {{ __('Aprendices') }} <span class="text-[#39A900]">SENA</span>
+                    {{ __('Usuarios') }} <span class="text-[#39A900]">SENA</span>
                 </h2>
                 <p class="text-slate-600 text-[10px] uppercase font-black tracking-widest mt-1">
-                    Gestión de Aprendices Registrados <span class="mx-2 text-slate-300">|</span> <span class="text-[#39A900]">Admin</span>
+                    Gestión de Usuarios Registrados <span class="mx-2 text-slate-300">|</span> <span class="text-[#39A900]">Admin</span>
                 </p>
             </div>
         </div>
@@ -21,7 +21,7 @@
                 <table class="min-w-full divide-y divide-slate-100">
                     <thead class="bg-slate-50/50 uppercase tracking-widest">
                         <tr>
-                            <th class="px-6 py-2 text-left text-[8px] font-black text-slate-600">Aprendiz / Identidad</th>
+                            <th class="px-6 py-2 text-left text-[8px] font-black text-slate-600">Usuario / Identidad</th>
                             <th class="px-6 py-2 text-left text-[8px] font-black text-slate-600">Contacto</th>
                             <th class="px-6 py-2 text-left text-[8px] font-black text-slate-600">Documento</th>
                             <th class="px-8 py-2 text-right text-[8px] font-black text-slate-600">Acciones</th>
@@ -40,7 +40,7 @@
                                                 {{ $usuario->name }}
                                             </div>
                                             <div class="text-[9px] text-slate-400 font-bold tracking-wider">
-                                                {{ $usuario->hasRole('Lider Admin') ? 'Administrador' : 'Aprendiz SENA' }}
+                                                {{ $usuario->hasRole('Lider Admin') ? 'Administrador' : 'Usuario Sena' }}
                                             </div>
                                         </div>
                                     </div>
@@ -74,7 +74,7 @@
                                         <form id="user-delete-{{ $usuario->id }}" action="{{ route('admin.usuarios.destroy', ['user' => $usuario->id]) }}" method="POST" class="inline">
                                             @csrf @method('DELETE')
                                             <button type="button"
-                                                    onclick="confirmDelete('user-delete-{{ $usuario->id }}', 'Se eliminará al aprendiz {{ addslashes($usuario->name) }} y todos sus datos asociados.')"
+                                                    onclick="confirmDelete('user-delete-{{ $usuario->id }}', 'Se eliminará al usuario {{ addslashes($usuario->name) }} y todos sus datos asociados.')"
                                                     class="p-1.5 bg-rose-50 text-rose-600 hover:bg-rose-600 hover:text-white rounded-lg transition-all border border-rose-100 hover:border-rose-600 shadow-sm active:scale-90"
                                                     title="Eliminar">
                                                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
@@ -88,7 +88,7 @@
                                 <td colspan="4" class="px-8 py-10 text-center">
                                     <div class="flex flex-col items-center gap-2">
                                         <svg class="w-10 h-10 text-slate-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                                        <p class="text-slate-400 font-bold text-xs uppercase tracking-widest leading-loose">No hay aprendices registrados.</p>
+                                        <p class="text-slate-400 font-bold text-xs uppercase tracking-widest leading-loose">No hay usuarios registrados.</p>
                                     </div>
                                 </td>
                             </tr>

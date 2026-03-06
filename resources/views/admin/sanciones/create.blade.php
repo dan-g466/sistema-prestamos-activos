@@ -12,9 +12,9 @@
                     @csrf
                     <div class="space-y-6">
                         <div>
-                            <x-input-label for="user_id" :value="__('Aprendiz a Sancionar')" />
+                            <x-input-label for="user_id" :value="__('Usuario Sena a Sancionar')" />
                             <select name="user_id" id="user_id" class="w-full border-gray-300 rounded-md shadow-sm focus:ring-red-500 mt-1" required>
-                                <option value="">Seleccione un aprendiz...</option>
+                                <option value="">Seleccione un usuario...</option>
                                 @foreach($usuarios as $usuario)
                                     <option value="{{ $usuario->id }}">{{ $usuario->name }} ({{ $usuario->documento }})</option>
                                 @endforeach

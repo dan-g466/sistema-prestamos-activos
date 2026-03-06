@@ -2,6 +2,7 @@
 
     <div x-data="{ 
         openModal: false, 
+        submitting: false,
         elementoId: null, 
         elementoNombre: '',
         init() {
@@ -10,7 +11,7 @@
     }">
 
         {{-- ─── Hero / Search Bar ─── --}}
-        <div class="bg-gradient-to-br from-[#00ff44] to-[#004d75] py-10 px-4">
+        <div class="bg-[#39A900] py-10 px-4 rounded-3xl mb-8 shadow-lg shadow-green-900/20">
             <div class="max-w-5xl mx-auto text-center">
                 <p class="text-[10px] font-black text-white/50 uppercase tracking-[0.3em] mb-1">Centro de Gestión</p>
                 <h1 class="text-2xl md:text-3xl font-black text-white mb-6 tracking-tight">
@@ -54,7 +55,7 @@
 
                 <a href="{{ route('user.catalogo', array_merge(request()->only('search'), ['categoria' => ''])) }}"
                    class="px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-wide transition-all border
-                          {{ !request('categoria') ? 'bg-[#004d0f] text-white border-[#00324D] shadow-md' : 'bg-white text-slate-500 border-slate-200 hover:border-[#39A900] hover:text-[#39A900]' }}">
+                          {{ !request('categoria') ? 'bg-[#39A900] text-white border-[#39A900] shadow-md' : 'bg-white text-slate-500 border-slate-200 hover:border-[#39A900] hover:text-[#39A900]' }}">
                     Todos
                 </a>
 
@@ -119,9 +120,21 @@
                                 </div>
 
                                 <div class="mt-auto">
-                                    @if(Auth::user()->sancionado)
+                                    @php $sancionActual = Auth::user()->obtenerSancionActiva(); @endphp
+                                    @if($sancionActual)
+                                        <div class="w-full p-2 bg-rose-50 border border-rose-100 rounded-xl text-center">
+                                            <p class="text-[9px] font-black text-rose-600 uppercase tracking-widest flex items-center justify-center gap-1 mb-1">
+                                                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/></svg>
+                                                Cuenta Sancionada
+                                            </p>
+                                            <p class="text-[10px] font-bold text-slate-700 leading-tight mb-1">
+                                                Motivo: <span class="text-slate-500 font-medium italic">"{{ $sancionActual->motivo }}"</span>
+                                            </p>
+                                            <p class="text-[8px] font-black text-slate-400">Hasta: {{ $sancionActual->fecha_fin->format('d/m/Y') }}</p>
+                                        </div>
+                                    @elseif(Auth::user()->estaSancionado())
                                         <div class="w-full py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-center">
-                                            <p class="text-[8px] font-black text-slate-400 uppercase tracking-wider">🔒 Bloqueado</p>
+                                            <p class="text-[8px] font-black text-slate-400 uppercase tracking-wider">🔒 Bloqueado administrativamente</p>
                                         </div>
                                     @else
                                         <button @click="openModal = true; elementoId = {{ $elemento->id }}; elementoNombre = '{{ $elemento->nombre }}'"
@@ -198,7 +211,7 @@
                             <p class="text-sm font-black text-[#00324D]" x-text="elementoNombre"></p>
                         </div>
 
-                        <form :action="'{{ route('user.solicitar') }}'" method="POST">
+                        <form :action="'{{ route('user.solicitar') }}'" method="POST" @submit="submitting = true">
                             @csrf
                             <input type="hidden" name="elemento_id" :value="elementoId">
 
@@ -241,8 +254,20 @@
                                     Cancelar
                                 </button>
                                 <button type="submit"
-                                        class="flex-1 px-6 py-3 bg-[#39A900] text-white rounded-xl text-xs font-black uppercase tracking-widest hover:bg-green-700 transition-all active:scale-95 shadow-lg shadow-green-100">
-                                    Confirmar
+                                        :disabled="submitting"
+                                        class="flex-1 px-6 py-3 bg-[#39A900] text-white rounded-xl text-xs font-black uppercase tracking-widest hover:bg-green-700 transition-all active:scale-95 shadow-lg shadow-green-100 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
+                                    <template x-if="!submitting">
+                                        <span>Confirmar</span>
+                                    </template>
+                                    <template x-if="submitting">
+                                        <div class="flex items-center gap-2">
+                                            <svg class="animate-spin h-3.5 w-3.5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                            </svg>
+                                            <span>Procesando...</span>
+                                        </div>
+                                    </template>
                                 </button>
                             </div>
                         </form>
@@ -253,4 +278,4 @@
 
     </div>
 
-</x-app-layout>
+</x-user-layout>

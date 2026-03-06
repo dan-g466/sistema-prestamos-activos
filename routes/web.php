@@ -72,6 +72,7 @@ Route::middleware(['auth', 'role:Lider Admin'])->prefix('admin')->name('admin.')
     // 5. Reportes y Auditoría
     Route::get('/reportes', [ReporteController::class, 'index'])->name('reportes.index');
     Route::get('/reportes/pdf', [ReporteController::class, 'pdf'])->name('reportes.pdf');
+    Route::get('/reportes/excel', [ReporteController::class, 'excel'])->name('reportes.excel');
 
     Route::get('/movimientos', [MovimientoController::class, 'index'])->name('movimientos.index');
     

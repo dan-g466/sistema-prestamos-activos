@@ -2,7 +2,7 @@
     <div class="mb-4 flex items-center justify-between">
         <div>
             <h2 class="font-black text-2xl text-[#00324D] leading-tight tracking-tight">
-                {{ __('Editar') }} <span class="text-[#39A900]">{{ $user->hasRole('Lider Admin') ? 'Administrador' : 'Aprendiz' }}</span>
+                {{ __('Editar') }} <span class="text-[#39A900]">{{ $user->hasRole('Lider Admin') ? 'Administrador' : 'Usuario Sena' }}</span>
             </h2>
             <p class="text-slate-600 text-[10px] uppercase font-black tracking-widest mt-1">
                 Gestión de Cuenta <span class="mx-2 text-slate-300">|</span> ID: {{ $user->documento }}
@@ -30,7 +30,7 @@
                 </div>
                 <div>
                     <p class="font-black text-lg text-[#00324D] leading-tight">{{ $user->name }}</p>
-                    <p class="text-[10px] font-black text-[#39A900] uppercase tracking-widest">{{ $user->hasRole('Lider Admin') ? 'Administrador' : 'Aprendiz SENA' }}</p>
+                    <p class="text-[10px] font-black text-[#39A900] uppercase tracking-widest">{{ $user->hasRole('Lider Admin') ? 'Administrador' : 'Usuario Sena' }}</p>
                 </div>
             </div>
 

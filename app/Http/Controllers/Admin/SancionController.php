@@ -27,10 +27,16 @@ class SancionController extends Controller
      */
     public function create()
     {
-        // Solo aprendices pueden ser sancionados
-        $usuarios = User::whereHas('roles', function($q){
-            $q->where('name', 'Usuario SENA');
-        })->orderBy('name')->get();
+        // Solo usuarios Sena pueden ser sancionados. 
+        // Se excluye al administrador actual y a cualquier otro usuario con rol administrativo.
+        $usuarios = User::where('id', '!=', auth()->id())
+            ->whereHas('roles', function($q){
+                $q->where('name', 'Usuario SENA');
+            })
+            ->whereDoesntHave('roles', function($q){
+                $q->where('name', 'Lider Admin');
+            })
+            ->orderBy('name')->get();
 
         return view('admin.sanciones.create', compact('usuarios'));
     }
@@ -48,7 +54,13 @@ class SancionController extends Controller
             'prestamo_id' => 'nullable|exists:prestamos,id'
         ]);
 
-        Sancion::create([
+        $usuario = User::findOrFail($request->user_id);
+
+        if ($usuario->hasRole('Lider Admin')) {
+            return back()->with('error', 'No se puede sancionar a un administrador.');
+        }
+
+        $sancion = Sancion::create([
             'user_id' => $request->user_id,
             'prestamo_id' => $request->prestamo_id,
             'motivo' => $request->motivo,
@@ -57,8 +69,11 @@ class SancionController extends Controller
             'estado' => 'Activa',
         ]);
 
+        // Sincronizar estado en el usuario
+        $usuario->update(['sancionado' => true]);
+
         return redirect()->route('admin.sanciones.index')
-            ->with('success', 'Sanción aplicada. El aprendiz ha quedado bloqueado hasta la fecha final.');
+            ->with('success', 'Sanción aplicada. El usuario ha quedado bloqueado hasta la fecha final.');
     }
 
     /**
@@ -82,6 +97,10 @@ class SancionController extends Controller
 
         $sancion->update($request->all());
 
+        // Sincronizar estado en el usuario basado en la nueva fecha de fin
+        $seraSancionado = $sancion->fecha_fin >= now()->startOfDay();
+        $sancion->user->update(['sancionado' => $seraSancionado]);
+
         return redirect()->route('admin.sanciones.index')
             ->with('success', 'Sanción actualizada correctamente.');
     }
@@ -91,7 +110,18 @@ class SancionController extends Controller
      */
     public function destroy(Sancion $sancion)
     {
+        $userId = $sancion->user_id;
         $sancion->delete();
+
+        // Verificar si le quedan otras sanciones activas antes de quitar el bloqueo
+        $tieneMasSanciones = Sancion::where('user_id', $userId)
+            ->where('fecha_fin', '>=', now())
+            ->exists();
+
+        if (!$tieneMasSanciones) {
+            User::where('id', $userId)->update(['sancionado' => false]);
+        }
+
         return redirect()->route('admin.sanciones.index')
             ->with('success', 'Sanción levantada. El usuario ya puede solicitar equipos nuevamente.');
     }

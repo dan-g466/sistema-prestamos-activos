@@ -126,8 +126,6 @@
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
                     </button>
                     <div class="hidden sm:block">
-                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-0.5 opacity-60">Centro Ind. del Diseño</p>
-                        <h1 class="text-sm font-black text-[#00324D] uppercase tracking-tight">Reg. Formación Profesional</h1>
                     </div>
                 </div>
 
@@ -137,7 +135,7 @@
                             <p class="text-sm font-black text-[#00324D] leading-none mb-1">{{ Auth::user()->name }}</p>
                             <span class="text-[9px] font-black text-[#39A900] uppercase tracking-widest">Activo • Aprendiz</span>
                         </div>
-                        <div class="w-12 h-12 bg-gradient-to-tr from-[#39A900] to-[#00324D] rounded-2xl flex items-center justify-center text-white text-xl font-black shadow-xl shadow-green-900/10 border-2 border-white ring-4 ring-slate-50">
+                        <div class="w-12 h-12 bg-[#39A900] rounded-2xl flex items-center justify-center text-white text-xl font-black shadow-xl shadow-green-900/10 border-2 border-white ring-4 ring-slate-50">
                             {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
                         </div>
                     </div>

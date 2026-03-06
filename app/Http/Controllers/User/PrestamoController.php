@@ -14,7 +14,7 @@ class PrestamoController extends Controller
     public function solicitudes()
     {
         $prestamos = Prestamo::where('user_id', Auth::id())
-            ->whereIn('estado', ['Pendiente', 'Aceptado', 'Activo', 'Vencido', 'Por Confirmar'])
+            ->whereIn('estado', ['Pendiente', 'Aceptado', 'Por Confirmar'])
             ->with(['elemento.categoria'])
             ->orderBy('created_at', 'desc')
             ->paginate(8);
@@ -64,21 +64,49 @@ class PrestamoController extends Controller
         ]);
 
         $user = Auth::user();
-        $elemento = Elemento::findOrFail($request->elemento_id);
 
-        Prestamo::create([
-            'user_id' => $user->id,
-            'elemento_id' => $elemento->id,
-            'fecha_solicitud' => now(),
-            'fecha_inicio' => \Carbon\Carbon::parse($request->fecha_inicio),
-            'fecha_devolucion_esperada' => \Carbon\Carbon::parse($request->fecha_devolucion_esperada),
-            'estado' => 'Pendiente',
-            'observaciones' => $request->observaciones,
-        ]);
+        // 0. Validar si el usuario está sancionado (Seguridad del lado del servidor)
+        if ($user->estaSancionado()) {
+            $sancion = $user->obtenerSancionActiva();
+            $motivo = $sancion ? " debido a: '{$sancion->motivo}'" : "";
+            return redirect()->back()->with('error', "Tu cuenta se encuentra bloqueada por una sanción activa{$motivo}. No puedes solicitar equipos.");
+        }
 
-        // Marcar equipo como prestado inmediatamente para que no aparezca en el catálogo (HU-LU-01)
-        $elemento->update(['estado' => 'Prestado']);
+        return \DB::transaction(function () use ($request, $user) {
+            $elemento = Elemento::where('id', $request->elemento_id)
+                ->lockForUpdate()
+                ->firstOrFail();
 
-        return redirect()->route('user.prestamos.index')->with('success', '¡Solicitud enviada con éxito! Puedes ver el estado de tu trámite aquí.');
+            // 1. Verificar disponibilidad real
+            if ($elemento->estado !== 'Disponible') {
+                return redirect()->back()->with('error', 'Lo sentimos, este equipo ya no se encuentra disponible.');
+            }
+
+            // 2. Evitar solicitudes duplicadas simultáneas
+            $existe = Prestamo::where('user_id', $user->id)
+                ->where('elemento_id', $elemento->id)
+                ->whereIn('estado', ['Pendiente', 'Aceptado', 'Activo', 'Por Confirmar'])
+                ->exists();
+
+            if ($existe) {
+                return redirect()->back()->with('error', 'Ya tienes una solicitud activa para este equipo.');
+            }
+
+            // 3. Crear el préstamo
+            Prestamo::create([
+                'user_id' => $user->id,
+                'elemento_id' => $elemento->id,
+                'fecha_solicitud' => now(),
+                'fecha_inicio' => \Carbon\Carbon::parse($request->fecha_inicio),
+                'fecha_devolucion_esperada' => \Carbon\Carbon::parse($request->fecha_devolucion_esperada),
+                'estado' => 'Pendiente',
+                'observaciones' => $request->observaciones,
+            ]);
+
+            // 4. Marcar equipo como prestado inmediatamente
+            $elemento->update(['estado' => 'Prestado']);
+
+            return redirect()->route('user.prestamos.index')->with('success', '¡Solicitud enviada con éxito! Puedes ver el estado de tu trámite aquí.');
+        });
     }
 }

@@ -15,14 +15,14 @@ class DashboardController extends Controller
         $totalElementos = Elemento::count();
         $prestamosPendientes = Prestamo::where('estado', 'Pendiente')->count();
         $prestamosActivos = Prestamo::where('estado', 'Activo')->count();
-        $aprendicesSancionados = User::where('sancionado', true)->count();
+        $usuariosSancionados = User::where('sancionado', true)->count();
 
         // CAMBIO: Ahora busca resources/views/admin/dashboard.blade.php
         return view('admin.dashboard', compact(
             'totalElementos', 
             'prestamosPendientes', 
             'prestamosActivos', 
-            'aprendicesSancionados'
+            'usuariosSancionados'
         ));
     }
 }
