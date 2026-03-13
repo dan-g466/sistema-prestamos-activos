@@ -58,32 +58,37 @@ class ElementoController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'nombre' => 'required|string|max:255',
             'descripcion' => 'nullable|string',
             'codigo_sena' => 'required|string|unique:elementos',
             'categoria_id' => 'required|exists:categorias,id',
             'estado' => 'required|in:Disponible,Prestado,En Mantenimiento,Dado de Baja',
-            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:102400',
         ]);
 
-        $data = $request->all();
+        try {
+            return \Illuminate\Support\Facades\DB::transaction(function () use ($request, $validated) {
+                if ($request->hasFile('imagen')) {
+                    $validated['imagen'] = $request->file('imagen')->store('elementos', 'public');
+                }
 
-        if ($request->hasFile('imagen')) {
-            $data['imagen'] = $request->file('imagen')->store('elementos', 'public');
+                $elemento = Elemento::create($validated);
+
+                // Registro de Auditoría
+                Movimiento::create([
+                    'elemento_id' => $elemento->id,
+                    'user_id' => Auth::id(),
+                    'tipo_movimiento' => 'Entrada',
+                    'descripcion' => "Registro inicial del equipo en el sistema.",
+                ]);
+
+                return redirect()->route('admin.elementos.index')
+                    ->with('success', 'Elemento registrado e imagen guardada.');
+            });
+        } catch (\Exception $e) {
+            return back()->withInput()->with('error', 'Error al crear el elemento: ' . $e->getMessage());
         }
-
-        $elemento = Elemento::create($data);
-
-        // Registro de Auditoría
-        Movimiento::create([
-            'elemento_id' => $elemento->id,
-            'user_id' => Auth::id(),
-            'tipo_movimiento' => 'Entrada',
-            'descripcion' => "Registro inicial del equipo en el sistema.",
-        ]);
-
-        return redirect()->route('admin.elementos.index')->with('success', 'Elemento registrado e imagen guardada.');
     }
 
     /**
@@ -115,7 +120,7 @@ class ElementoController extends Controller
             'codigo_sena' => 'required|string|unique:elementos,codigo_sena,' . $elemento->id,
             'categoria_id' => 'required|exists:categorias,id',
             'estado' => 'required|in:Disponible,Prestado,En Mantenimiento,Dado de Baja',
-            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:102400',
         ]);
 
         $data = $request->all();

@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Models;
-
+;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -28,7 +28,7 @@ class User extends Authenticatable
                     ->subject('Recuperación de Contraseña - Sistema de Préstamos SENA')
                     ->greeting('¡Hola!')
                     ->line('Estás recibiendo este correo porque recibimos una solicitud de restablecimiento de contraseña para tu cuenta.')
-                    ->action('Restablecer Contraseña', url(config('app.url').route('password.reset', $this->token, false)))
+                    ->action('Restablecer Contraseña', route('password.reset', ['token' => $this->token, 'email' => $notifiable->getEmailForPasswordReset()], true))
                     ->line('Este enlace de restablecimiento de contraseña expirará en 60 minutos.')
                     ->line('Si no realizaste esta solicitud, no es necesario realizar ninguna otra acción.')
                     ->salutation('Saludos, el equipo del Sistema de Préstamos SENA');

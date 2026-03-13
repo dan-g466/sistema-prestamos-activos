@@ -7,7 +7,7 @@
             
             <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
                 <div class="flex-1 text-center md:text-left">
-                    <div class="inline-flex items-center gap-3 px-3 py-1.5 bg-white/5 backdrop-blur-2xl rounded-2xl border border-white/10 mb-6 transform hover:scale-105 transition-transform cursor-default">
+                    <div class="inline-flex items-center gap-3 px-3 py-1.5 bg-white/5 dark:bg-black/20 backdrop-blur-2xl rounded-2xl border border-white/10 mb-6 transform hover:scale-105 transition-transform cursor-default">
                         <span class="relative flex h-2 w-2">
                             <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#39A900] opacity-75"></span>
                             <span class="relative inline-flex rounded-full h-2 w-2 bg-[#39A900]"></span>
@@ -51,8 +51,8 @@
 
                 {{-- Card de Usuario Compacta --}}
                 <div class="relative group/user shrink-0">
-                    <div class="relative bg-white/5 backdrop-blur-3xl border border-white/10 rounded-[2.5rem] p-6 flex flex-col items-center gap-4 shadow-2xl transition-transform group-hover/user:-translate-y-1">
-                        <div class="w-16 h-16 bg-gradient-to-br from-white to-slate-200 rounded-2xl shadow-2xl flex items-center justify-center text-2xl font-black text-[#00324D]">
+                    <div class="relative bg-white/5 dark:bg-black/20 backdrop-blur-3xl border border-white/10 rounded-[2.5rem] p-6 flex flex-col items-center gap-4 shadow-2xl transition-transform group-hover/user:-translate-y-1">
+                        <div class="w-16 h-16 bg-gradient-to-br from-white to-slate-200 dark:from-slate-700 dark:to-slate-900 rounded-2xl shadow-2xl flex items-center justify-center text-2xl font-black text-[#00324D] dark:text-white">
                             {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
                         </div>
                         <div class="text-center">
@@ -71,36 +71,36 @@
             <div class="lg:col-span-12 xl:col-span-8 flex flex-col min-h-0">
                 <div class="flex items-center justify-between mb-6 shrink-0">
                     <div class="flex items-center gap-4">
-                        <div class="w-10 h-10 bg-white rounded-2xl shadow-lg flex items-center justify-center text-[#39A900] border border-slate-50">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                        <div class="w-10 h-10 bg-white dark:bg-slate-800 rounded-2xl shadow-lg flex items-center justify-center text-[#39A900] border border-slate-50 dark:border-slate-700">
+                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
                         </div>
-                        <h3 class="text-xl font-black text-[#00324D] tracking-tighter uppercase">Equipos en uso</h3>
+                        <h3 class="text-xl font-black text-[#00324D] dark:text-white tracking-tighter uppercase">Equipos en uso</h3>
                     </div>
-                    <a href="{{ route('user.prestamos.activos') }}" class="px-4 py-1.5 bg-white border border-slate-100 rounded-full text-[9px] font-black text-slate-400 uppercase tracking-widest hover:text-[#39A900] transition-all">Ver Más</a>
+                    <a href="{{ route('user.prestamos.activos') }}" class="px-4 py-1.5 bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-full text-[9px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest hover:text-[#39A900] transition-all">Ver Más</a>
                 </div>
 
                 <div class="flex-1 overflow-y-auto custom-scrollbar pr-2 space-y-4">
                     @forelse($prestamosActivos as $p)
-                        <div class="group relative bg-white border border-slate-100 p-4 rounded-3xl shadow-xl shadow-slate-200/30 hover:shadow-2xl transition-all duration-500 overflow-hidden flex flex-col md:flex-row md:items-center justify-between gap-4">
-                            <div class="flex items-center gap-4 relative z-10">
-                                <div class="w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center text-[#39A900] shadow-inner group-hover:scale-105 transition-transform duration-500">
+                        <div class="group relative bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 p-4 rounded-3xl shadow-xl shadow-slate-200/30 dark:shadow-none hover:shadow-2xl transition-all duration-500 overflow-hidden flex flex-col md:flex-row md:items-center justify-between gap-4">
+                             <div class="flex items-center gap-4 relative z-10">
+                                <div class="w-12 h-12 bg-slate-50 dark:bg-slate-800 rounded-xl flex items-center justify-center text-[#39A900] shadow-inner group-hover:scale-105 transition-transform duration-500">
                                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
                                 </div>
                                 <div>
-                                    <h4 class="text-sm font-black text-[#00324D] group-hover:text-[#39A900] transition-colors tracking-tight">{{ $p->elemento->nombre }}</h4>
+                                    <h4 class="text-sm font-black text-[#00324D] dark:text-white group-hover:text-[#39A900] transition-colors tracking-tight">{{ $p->elemento->nombre }}</h4>
                                     <div class="flex items-center gap-2">
-                                        <span class="text-[8px] font-black text-slate-400 uppercase tracking-widest leading-none">Placa:</span>
-                                        <span class="text-[9px] font-mono font-bold text-slate-600 bg-slate-50 px-2 py-0.5 rounded border border-slate-100">{{ $p->elemento->codigo_sena }}</span>
+                                        <span class="text-[8px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest leading-none">Placa:</span>
+                                        <span class="text-[9px] font-mono font-bold text-slate-600 dark:text-slate-300 bg-slate-50 dark:bg-slate-800 px-2 py-0.5 rounded border border-slate-100 dark:border-slate-700">{{ $p->elemento->codigo_sena }}</span>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="flex items-center gap-6 relative z-10">
                                 <div class="hidden md:flex flex-col items-end">
-                                    <span class="text-[8px] font-black text-slate-400 uppercase tracking-widest mb-0.5">Entrega:</span>
+                                    <span class="text-[8px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-0.5">Entrega:</span>
                                     <div class="flex items-center gap-1.5">
                                         <span class="text-[11px] font-black text-rose-500">{{ $p->fecha_devolucion_esperada ? $p->fecha_devolucion_esperada->format('d/m') : '—' }}</span>
-                                        <span class="px-1.5 py-0.5 bg-rose-50 text-rose-600 rounded text-[8px] font-black uppercase">{{ $p->fecha_devolucion_esperada ? $p->fecha_devolucion_esperada->format('h:i A') : '' }}</span>
+                                        <span class="px-1.5 py-0.5 bg-rose-50 dark:bg-rose-900/20 text-rose-600 dark:text-rose-400 rounded text-[8px] font-black uppercase">{{ $p->fecha_devolucion_esperada ? $p->fecha_devolucion_esperada->format('h:i A') : '' }}</span>
                                     </div>
                                 </div>
                                 <a href="{{ route('user.prestamos.show', $p) }}" class="flex items-center gap-2 px-4 py-2.5 bg-[#00324D] text-white rounded-xl text-[8px] font-black uppercase tracking-widest hover:bg-[#39A900] transition-all shrink-0">
@@ -109,8 +109,8 @@
                             </div>
                         </div>
                     @empty
-                        <div class="py-12 bg-slate-50/30 border-4 border-dashed border-slate-100 rounded-[2.5rem] text-center">
-                            <p class="text-[9px] font-black text-slate-300 uppercase tracking-[0.3em]">Sin capturas activas</p>
+                        <div class="py-12 bg-slate-50/30 dark:bg-slate-900/30 border-4 border-dashed border-slate-100 dark:border-slate-800 rounded-[2.5rem] text-center">
+                            <p class="text-[9px] font-black text-slate-300 dark:text-slate-700 uppercase tracking-[0.3em]">Sin capturas activas</p>
                         </div>
                     @endforelse
                 </div>
@@ -119,30 +119,30 @@
             {{-- Columna Lateral: SOLICITUDES --}}
             <div class="lg:col-span-12 xl:col-span-4 flex flex-col min-h-0">
                 <div class="flex items-center justify-between mb-6 shrink-0">
-                    <h3 class="text-xl font-black text-[#00324D] tracking-tighter uppercase">Pendientes</h3>
+                    <h3 class="text-xl font-black text-[#00324D] dark:text-white tracking-tighter uppercase">Pendientes</h3>
                     <a href="{{ route('user.prestamos.index') }}" class="text-[9px] font-black text-amber-500 uppercase tracking-widest hover:underline">Gestionar</a>
                 </div>
 
                 <div class="flex-1 overflow-y-auto custom-scrollbar pr-2 space-y-3">
                     @forelse($solicitudes as $s)
-                        <div class="group bg-white border border-slate-100 p-4 rounded-3xl shadow-xl shadow-slate-200/10 hover:shadow-2xl transition-all duration-500 relative flex items-center gap-4">
-                            <div class="w-10 h-10 bg-amber-50 rounded-xl flex items-center justify-center text-amber-500 shrink-0 shadow-inner group-hover:rotate-6 transition-transform">
+                        <div class="group bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 p-4 rounded-3xl shadow-xl shadow-slate-200/10 dark:shadow-none hover:shadow-2xl transition-all duration-500 relative flex items-center gap-4">
+                            <div class="w-10 h-10 bg-amber-50 dark:bg-amber-900/10 rounded-xl flex items-center justify-center text-amber-500 dark:text-amber-400 shrink-0 shadow-inner group-hover:rotate-6 transition-transform">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                             </div>
                             <div class="flex-1 min-w-0">
-                                <h4 class="text-[12px] font-black text-[#00324D] truncate group-hover:text-amber-600 transition-colors tracking-tight">{{ $s->elemento->nombre }}</h4>
+                                <h4 class="text-[12px] font-black text-[#00324D] dark:text-white truncate group-hover:text-amber-600 transition-colors tracking-tight">{{ $s->elemento->nombre }}</h4>
                                 <div class="flex items-center gap-2 mt-0.5">
-                                    <span class="px-1.5 py-0.5 bg-amber-50 text-amber-600 rounded text-[7px] font-black uppercase tracking-tighter border border-amber-100">{{ $s->estado }}</span>
-                                    <span class="text-[7px] font-black text-slate-300 uppercase leading-none">{{ $s->created_at->diffForHumans() }}</span>
+                                    <span class="px-1.5 py-0.5 bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400 rounded text-[7px] font-black uppercase tracking-tighter border border-amber-100 dark:border-amber-900/30">{{ $s->estado }}</span>
+                                    <span class="text-[7px] font-black text-slate-300 dark:text-slate-600 uppercase leading-none">{{ $s->created_at->diffForHumans() }}</span>
                                 </div>
                             </div>
-                            <a href="{{ route('user.prestamos.show', $s) }}" class="w-8 h-8 border border-slate-100 rounded-lg flex items-center justify-center text-slate-300 hover:text-amber-500 transition-all">
+                             <a href="{{ route('user.prestamos.show', $s) }}" class="w-8 h-8 border border-slate-100 dark:border-slate-800 rounded-lg flex items-center justify-center text-slate-300 dark:text-slate-700 hover:text-amber-500 dark:hover:text-amber-400 transition-all">
                                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7"/></svg>
                             </a>
                         </div>
                     @empty
-                        <div class="py-8 bg-white rounded-[2rem] border border-dashed border-slate-100 text-center">
-                            <p class="text-[8px] font-black text-slate-300 uppercase tracking-[0.3em]">Vacío</p>
+                        <div class="py-8 bg-white dark:bg-slate-900 rounded-[2rem] border border-dashed border-slate-100 dark:border-slate-800 text-center">
+                            <p class="text-[8px] font-black text-slate-300 dark:text-slate-700 uppercase tracking-[0.3em]">Vacío</p>
                         </div>
                     @endforelse
                 </div>

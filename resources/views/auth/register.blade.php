@@ -14,7 +14,12 @@
         <div class="input-group mb-4">
             <i class="fa-solid fa-id-card icon-left"></i>
             <input id="documento" type="text" name="documento" :value="old('documento')" 
-                placeholder="Número de Documento" required autocomplete="username" style="padding: 12px 45px;" />
+                placeholder="Número de Documento" required autocomplete="username" style="padding: 12px 45px;" 
+                inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                title="Solo se aceptan caracteres numéricos" />
+            <p style="font-size: 10px; color: #94a3b8; margin-top: 5px; margin-left: 5px;">
+                <i class="fa-solid fa-circle-info mr-1"></i> Solo caracteres numéricos
+            </p>
             <x-input-error :messages="$errors->get('documento')" class="mt-2-err" />
         </div>
 

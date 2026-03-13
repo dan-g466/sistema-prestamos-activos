@@ -1,73 +1,73 @@
 <x-admin-layout>
     <div class="mb-8">
-        <h2 class="font-semibold text-2xl text-gray-800 leading-tight">
-            {{ __('Historial de Movimientos y Auditoría') }}
+        <h2 class="font-black text-2xl text-slate-800 dark:text-white leading-tight tracking-tight">
+            {{ __('Historial de Movimientos') }} <span class="text-[#39A900]">Auditoría</span>
         </h2>
+        <p class="text-slate-500 dark:text-slate-400 text-[10px] uppercase font-black tracking-widest mt-1">Registros de actividad en tiempo real</p>
     </div>
 
     <div>
         <div class="max-w-7xl mx-auto">
             
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg border-t-4 border-gray-800">
-                <div class="p-6 text-gray-900">
-                    
-                    <div class="mb-4 flex justify-between items-center">
-                        <p class="text-sm text-gray-600 italic">
+            <div class="bg-white dark:bg-slate-900 overflow-hidden shadow-sm rounded-[2rem] border border-slate-100 dark:border-slate-800 transition-all">
+                <div class="p-8 text-gray-900">
+                    <div class="mb-6 flex justify-between items-center">
+                        <p class="text-xs text-slate-500 dark:text-slate-400 font-bold italic">
                             Mostrando los registros más recientes de actividad en el inventario.
                         </p>
                     </div>
 
                     <div class="overflow-x-auto">
-                        <table class="min-w-full divide-y divide-gray-200">
-                            <thead class="bg-gray-50">
+                        <table class="min-w-full divide-y divide-slate-100 dark:divide-slate-800">
+                            <thead class="bg-slate-50 dark:bg-slate-800/50">
                                 <tr>
-                                    <th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Fecha / Hora</th>
-                                    <th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Responsable</th>
-                                    <th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Tipo</th>
-                                    <th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Elemento</th>
-                                    <th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Descripción</th>
+                                    <th class="px-6 py-4 text-left text-[9px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-[0.2em]">Fecha / Hora</th>
+                                    <th class="px-6 py-4 text-left text-[9px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-[0.2em]">Responsable</th>
+                                    <th class="px-6 py-4 text-left text-[9px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-[0.2em]">Tipo</th>
+                                    <th class="px-6 py-4 text-left text-[9px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-[0.2em]">Elemento</th>
+                                    <th class="px-6 py-4 text-left text-[9px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-[0.2em]">Descripción</th>
                                 </tr>
                             </thead>
-                            <tbody class="bg-white divide-y divide-gray-100">
+                            <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
                                 @forelse ($movimientos as $movimiento)
-                                    <tr class="hover:bg-gray-50 transition">
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 font-mono">
+                                    <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors group">
+                                        <td class="px-6 py-4 whitespace-nowrap text-[10px] text-slate-500 dark:text-slate-400 font-bold font-mono">
                                             {{ $movimiento->created_at->format('d/m/Y') }}
-                                            <span class="block text-xs text-gray-400">{{ $movimiento->created_at->format('h:i A') }}</span>
+                                            <span class="block text-[9px] text-slate-400 dark:text-slate-600">{{ $movimiento->created_at->format('h:i A') }}</span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <div class="text-sm font-semibold text-gray-900">{{ $movimiento->user->name }}</div>
-                                            <div class="text-xs text-gray-500 italic">{{ $movimiento->user->getRoleNames()->first() ?? 'Admin' }}</div>
+                                            <div class="text-[11px] font-black text-slate-900 dark:text-slate-200 uppercase tracking-tight">{{ $movimiento->user->name }}</div>
+                                            <div class="text-[9px] text-[#39A900] font-black uppercase tracking-widest">{{ $movimiento->user->getRoleNames()->first() ?? 'Admin' }}</div>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             @php
                                                 $color = match($movimiento->tipo_movimiento) {
-                                                    'Entrada' => 'bg-green-100 text-green-800',
-                                                    'Entrega' => 'bg-blue-100 text-blue-800',
-                                                    'Devolución' => 'bg-indigo-100 text-indigo-800',
-                                                    'Salida/Baja' => 'bg-red-100 text-red-800',
-                                                    'Cambio de Estado' => 'bg-yellow-100 text-yellow-800',
-                                                    default => 'bg-gray-100 text-gray-800'
+                                                    'Entrada' => 'bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-400 border-green-200 dark:border-green-800/30',
+                                                    'Entrega' => 'bg-blue-100 dark:bg-blue-900/20 text-blue-800 dark:text-blue-400 border-blue-200 dark:border-blue-800/30',
+                                                    'Devolución' => 'bg-indigo-100 dark:bg-indigo-900/20 text-indigo-800 dark:text-indigo-400 border-indigo-200 dark:border-indigo-800/30',
+                                                    'Salida/Baja' => 'bg-red-100 dark:bg-red-900/20 text-red-800 dark:text-red-400 border-red-200 dark:border-red-800/30',
+                                                    'Cambio de Estado' => 'bg-yellow-100 dark:bg-yellow-900/20 text-yellow-800 dark:text-yellow-400 border-yellow-200 dark:border-yellow-800/30',
+                                                    default => 'bg-gray-100 dark:bg-slate-800 text-gray-800 dark:text-slate-400 border-gray-200 dark:border-slate-700'
                                                 };
                                             @endphp
-                                            <span class="px-2 py-1 text-xs font-bold rounded-md {{ $color }}">
+                                            <span class="px-2 py-0.5 text-[8px] font-black rounded-full uppercase tracking-widest border {{ $color }}">
                                                 {{ $movimiento->tipo_movimiento }}
                                             </span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <div class="text-sm font-medium text-gray-900">{{ $movimiento->elemento->nombre }}</div>
-                                            <div class="text-xs font-mono text-indigo-600">{{ $movimiento->elemento->codigo_sena }}</div>
+                                            <div class="text-[11px] font-black text-slate-900 dark:text-slate-200 uppercase">{{ $movimiento->elemento->nombre }}</div>
+                                            <div class="text-[9px] font-mono font-black text-slate-400 dark:text-slate-600 tracking-tighter">{{ $movimiento->elemento->codigo_sena }}</div>
                                         </td>
-                                        <td class="px-6 py-4 text-sm text-gray-600">
-                                            <span title="{{ $movimiento->descripcion }}">
-                                                {{ Str::limit($movimiento->descripcion, 50) }}
+                                        <td class="px-6 py-4 text-[10px] text-slate-600 dark:text-slate-400 font-medium">
+                                            <span title="{{ $movimiento->descripcion }}" class="line-clamp-2 leading-relaxed">
+                                                {{ $movimiento->descripcion }}
                                             </span>
                                         </td>
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="5" class="px-6 py-10 text-center text-gray-400 italic">
-                                            No se han registrado movimientos en el sistema aún.
+                                        <td colspan="5" class="px-6 py-12 text-center">
+                                            <div class="text-slate-400 dark:text-slate-600 italic text-xs font-bold">No se han registrado movimientos en el sistema aún.</div>
                                         </td>
                                     </tr>
                                 @endforelse

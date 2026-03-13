@@ -2,81 +2,106 @@
 <html lang="es">
 <head>
     <meta charset="utf-8">
-    <title>Préstamos del Mes - SENA</title>
+    <title>Reporte de Préstamos - SENA</title>
     <style>
-        body { font-family: sans-serif; background-color: #f3f4f6; padding: 40px; }
-        .container { background: white; padding: 40px; max-width: 1000px; margin: auto; border: 1px solid #e5e7eb; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #39A900; padding-bottom: 15px; margin-bottom: 30px; }
-        h1 { margin: 0; font-size: 24px; color: #1f2937; }
-        .sena-label { color: #00324D; font-weight: bold; font-size: 14px; text-transform: uppercase; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th { background: #f9fafb; color: #4b5563; text-transform: uppercase; font-size: 11px; padding: 12px 15px; text-align: left; border-bottom: 1px solid #e5e7eb; }
-        td { padding: 12px 15px; font-size: 13px; border-bottom: 1px solid #f3f4f6; color: #374151; }
-        .item-name { color: #00324D; font-family: monospace; font-size: 11px; }
-        .status { font-weight: bold; font-size: 11px; text-transform: uppercase; }
-        .footer { margin-top: 30px; text-align: right; font-size: 11px; color: #9ca3af; }
+        body {
+            font-family: 'Helvetica', Arial, sans-serif;
+            font-size: 10px;
+            color: #1e293b;
+            margin: 20px;
+            background: white;
+        }
+
+        /* Header */
+        .header-table { width: 100%; margin-bottom: 20px; }
+        .header-title { font-size: 20px; font-weight: bold; color: #00324D; }
+        .header-sub   { font-size: 9px; color: #64748b; text-transform: uppercase; margin-top: 4px; }
+        .header-sena  { font-size: 16px; font-weight: bold; color: #39A900; text-align: right; }
+        .header-date  { font-size: 9px; color: #94a3b8; text-align: right; }
+        .divider      { border-top: 3px solid #39A900; margin-bottom: 20px; }
+
+        /* Table */
+        .data-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        .data-table thead tr { background-color: #00324D; color: #ffffff; }
+        .data-table thead th { padding: 8px 10px; text-align: left; font-size: 9px; text-transform: uppercase; }
+        .data-table tbody tr:nth-child(even) { background-color: #f8fafc; }
+        .data-table tbody td { padding: 8px 10px; border-bottom: 1px solid #f1f5f9; font-size: 9.5px; }
+
+        .name     { font-weight: bold; color: #00324D; }
+        .element  { color: #334155; }
+        .date     { color: #64748b; font-family: monospace; }
+        .status   { font-weight: bold; text-transform: uppercase; font-size: 8.5px; }
+
+        /* Badges */
+        .badge { padding: 3px 8px; border-radius: 4px; font-weight: bold; }
+        .b-activo    { background: #dcfce7; color: #166534; }
+        .b-devuelto  { background: #f1f5f9; color: #475569; }
+        .b-vencido   { background: #fee2e2; color: #991b1b; }
+
+        /* Footer */
+        .footer { position: fixed; bottom: 0; width: 100%; border-top: 1px solid #e2e8f0; padding-top: 10px; font-size: 8px; color: #94a3b8; }
+        .footer-right { text-align: right; }
     </style>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
-<body class="bg-white p-10 font-sans text-sm">
-    <div id="report-content" class="container">
-        <div class="header">
-            <div>
-                <h1>Préstamos del Mes</h1>
-                <div style="color: #6b7280; font-size: 11px; margin-top: 5px;">{{ now()->isoFormat('MMMM YYYY') }} — Generado el {{ now()->format('d/m/Y H:i') }}</div>
-            </div>
-            <div class="sena-label">Sistema Préstamos SENA</div>
-        </div>
+<body>
 
-        <table>
-            <thead>
+    <table class="header-table">
+        <tr>
+            <td>
+                <div class="header-title">Reporte Mensual de Préstamos</div>
+                <div class="header-sub">Control de Actividad — Sistema de Gestión SENA</div>
+            </td>
+            <td>
+                <div class="header-sena">SENA</div>
+                <div class="header-date">Generado el {{ now()->format('d/m/Y H:i') }}</div>
+            </td>
+        </tr>
+    </table>
+    <div class="divider"></div>
+
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th style="width: 5%">#</th>
+                <th style="width: 25%">Aprendiz / Usuario</th>
+                <th style="width: 30%">Elemento Solicitado</th>
+                <th style="width: 15%">Solicitud</th>
+                <th style="width: 15%">Devolución</th>
+                <th style="width: 10%">Estado</th>
+            </tr>
+        </thead>
+        <tbody>
+            @forelse($prestamos as $i => $p)
+                @php
+                    $isVencido = $p->estado === 'Activo' && $p->fecha_devolucion_esperada < now();
+                    $statusClass = $isVencido ? 'b-vencido' : ($p->estado === 'Devuelto' ? 'b-devuelto' : 'b-activo');
+                    $statusLabel = $isVencido ? 'VENCIDO' : $p->estado;
+                @endphp
                 <tr>
-                    <th>Aprendiz</th>
-                    <th>Elemento</th>
-                    <th>F. Solicitud</th>
-                    <th>F. Devolución</th>
-                    <th>Estado</th>
+                    <td>{{ $i + 1 }}</td>
+                    <td class="name">{{ $p->user->name ?? 'Usuario no encontrado' }}</td>
+                    <td class="element">
+                        {{ $p->elemento->nombre ?? 'N/A' }}
+                        <br><small style="color:#94a3b8">{{ $p->elemento->codigo_sena ?? '' }}</small>
+                    </td>
+                    <td class="date">{{ $p->created_at->format('d/m/Y') }}</td>
+                    <td class="date">{{ $p->fecha_devolucion_esperada ? $p->fecha_devolucion_esperada->format('d/m/Y') : '—' }}</td>
+                    <td><span class="badge {{ $statusClass }}">{{ $statusLabel }}</span></td>
                 </tr>
-            </thead>
-            <tbody>
-                @forelse($prestamos as $p)
-                    <tr>
-                        <td style="font-weight: 600;">{{ $p->user->name }}</td>
-                        <td class="item-name">{{ $p->elemento->nombre }}</td>
-                        <td>{{ $p->fecha_solicitud->format('d/m/Y') }}</td>
-                        <td>{{ $p->fecha_devolucion_esperada->format('d/m/Y') }}</td>
-                        <td class="status">{{ $p->estado }}</td>
-                    </tr>
-                @empty
-                    <tr><td colspan="5" style="text-align: center; padding: 40px; color: #9ca3af;">Sin préstamos este mes.</td></tr>
-                @endforelse
-            </tbody>
-        </table>
-        <div class="footer">Total: {{ $prestamos->count() }} préstamo(s)</div>
-    </div>
+            @empty
+                <tr>
+                    <td colspan="6" style="text-align: center; padding: 40px; color: #94a3b8;">No se registraron movimientos en este periodo.</td>
+                </tr>
+            @endforelse
+        </tbody>
+    </table>
 
-    <script>
-        window.onload = () => {
-            setTimeout(() => {
-                const element = document.getElementById('report-content');
-                const opt = {
-                    margin: 0.5,
-                    filename: 'reporte-prestamos-del-mes.pdf',
-                    image: { type: 'jpeg', quality: 1 },
-                    html2canvas: { 
-                        scale: 2, 
-                        useCORS: true,
-                        logging: true,
-                        backgroundColor: '#ffffff'
-                    },
-                    jsPDF: { unit: 'in', format: 'letter', orientation: 'landscape' }
-                };
+    <table class="footer">
+        <tr>
+            <td>Centro de Gestión Administrativa — SENA</td>
+            <td class="footer-right">Periodo: {{ now()->isoFormat('MMMM YYYY') }} | Total: {{ $prestamos->count() }} registros</td>
+        </tr>
+    </table>
 
-                html2pdf().set(opt).from(element).save().then(() => {
-                    setTimeout(() => window.close(), 1000);
-                });
-            }, 1000);
-        };
-    </script>
 </body>
 </html>

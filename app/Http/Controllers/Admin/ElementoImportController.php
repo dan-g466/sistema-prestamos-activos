@@ -19,7 +19,7 @@ class ElementoImportController extends Controller
     public function import(Request $request)
     {
         $request->validate([
-            'file' => 'required|file|max:5120', // Permitimos hasta 5MB
+            'file' => 'required|file|max:102400', // Permitimos hasta 100MB
             'categoria_id' => 'nullable|exists:categorias,id',
         ]);
 

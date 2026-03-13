@@ -11,6 +11,11 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        // Prevenir caché en el navegador para mayor seguridad al cerrar sesión
+        $middleware->web(append: [
+            \App\Http\Middleware\NoCache::class,
+        ]);
+
         // REGISTRO DE ALIAS PARA SPATIE PERMISSIONS
         $middleware->alias([
             'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,

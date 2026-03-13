@@ -11,7 +11,7 @@
     }">
 
         {{-- ─── Hero / Search Bar ─── --}}
-        <div class="bg-[#39A900] py-10 px-4 rounded-3xl mb-8 shadow-lg shadow-green-900/20">
+        <div class="bg-[#39A900] dark:bg-[#39A900]/90 py-10 px-4 rounded-3xl mb-8 shadow-lg shadow-green-900/20">
             <div class="max-w-5xl mx-auto text-center">
                 <p class="text-[10px] font-black text-white/50 uppercase tracking-[0.3em] mb-1">Centro de Gestión</p>
                 <h1 class="text-2xl md:text-3xl font-black text-white mb-6 tracking-tight">
@@ -29,7 +29,7 @@
                                name="search"
                                value="{{ request('search') }}"
                                placeholder="Buscar por nombre o código SENA…"
-                               class="w-full pl-12 pr-32 py-3.5 rounded-2xl text-sm font-medium text-slate-700 bg-white shadow-xl border-0 focus:ring-2 focus:ring-[#39A900] outline-none transition">
+                               class="w-full pl-12 pr-32 py-3.5 rounded-2xl text-sm font-medium text-slate-700 dark:text-white bg-white dark:bg-slate-800 shadow-xl border-0 focus:ring-2 focus:ring-[#39A900] outline-none transition placeholder:text-slate-400 dark:placeholder:text-slate-500">
                         <button type="submit"
                                 class="absolute right-2 top-1/2 -translate-y-1/2 px-5 py-2 bg-[#39A900] hover:bg-green-700 text-white text-xs font-black uppercase tracking-wider rounded-xl transition active:scale-95 shadow-md shadow-green-900/30">
                             Buscar
@@ -43,7 +43,7 @@
 
             {{-- Flash mensaje --}}
             @if(session('success'))
-                <div class="mb-6 bg-white border-l-4 border-[#39A900] text-[#00324D] px-5 py-3.5 rounded-xl shadow-sm flex items-center gap-3 text-sm font-bold" x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 5000)">
+                <div class="mb-6 bg-white dark:bg-slate-900 border-l-4 border-[#39A900] dark:border-l-4 dark:border-slate-800 dark:border-l-[#39A900] text-[#00324D] dark:text-white px-5 py-3.5 rounded-xl shadow-sm flex items-center gap-3 text-sm font-bold" x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 5000)">
                     <svg class="w-5 h-5 text-[#39A900] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                     {{ session('success') }}
                 </div>
@@ -55,14 +55,14 @@
 
                 <a href="{{ route('user.catalogo', array_merge(request()->only('search'), ['categoria' => ''])) }}"
                    class="px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-wide transition-all border
-                          {{ !request('categoria') ? 'bg-[#39A900] text-white border-[#39A900] shadow-md' : 'bg-white text-slate-500 border-slate-200 hover:border-[#39A900] hover:text-[#39A900]' }}">
+                          {{ !request('categoria') ? 'bg-[#39A900] text-white border-[#39A900] shadow-md' : 'bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-700 hover:border-[#39A900] hover:text-[#39A900]' }}">
                     Todos
                 </a>
 
                 @foreach($categorias as $cat)
                     <a href="{{ route('user.catalogo', array_merge(request()->only('search'), ['categoria' => $cat->id])) }}"
                        class="px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-wide transition-all border
-                              {{ request('categoria') == $cat->id ? 'bg-[#39A900] text-white border-[#39A900] shadow-md shadow-green-100' : 'bg-white text-slate-500 border-slate-200 hover:border-[#39A900] hover:text-[#39A900]' }}">
+                              {{ request('categoria') == $cat->id ? 'bg-[#39A900] text-white border-[#39A900] shadow-md shadow-green-100' : 'bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-700 hover:border-[#39A900] hover:text-[#39A900]' }}">
                         {{ $cat->nombre }}
                     </a>
                 @endforeach
@@ -70,8 +70,8 @@
 
             {{-- Contador de resultados --}}
             <div class="flex items-center justify-between mb-5">
-                <p class="text-xs text-slate-400 font-bold">
-                    <span class="text-[#00324D] font-black text-sm">{{ $elementos->total() }}</span>
+                <p class="text-xs text-slate-400 dark:text-slate-500 font-bold">
+                    <span class="text-[#00324D] dark:text-white font-black text-sm">{{ $elementos->total() }}</span>
                     elemento{{ $elementos->total() !== 1 ? 's' : '' }} disponible{{ $elementos->total() !== 1 ? 's' : '' }}
                     @if(request('search'))
                         para <span class="text-[#39A900]">"{{ request('search') }}"</span>
@@ -79,7 +79,7 @@
                 </p>
                 @if(request('search') || request('categoria'))
                     <a href="{{ route('user.catalogo') }}" 
-                       class="px-4 py-2 bg-rose-50 border border-rose-100 text-rose-600 rounded-xl text-[10px] font-black uppercase tracking-widest flex items-center gap-2 hover:bg-rose-100 hover:shadow-lg hover:shadow-rose-900/5 transition-all active:scale-95 group/clear">
+                       class="px-4 py-2 bg-rose-50 dark:bg-rose-900/10 border border-rose-100 dark:border-rose-900/30 text-rose-600 dark:text-rose-400 rounded-xl text-[10px] font-black uppercase tracking-widest flex items-center gap-2 hover:bg-rose-100 dark:hover:bg-rose-900/20 hover:shadow-lg hover:shadow-rose-900/5 transition-all active:scale-95 group/clear">
                         <svg class="w-3.5 h-3.5 group-hover:rotate-90 transition-transform duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
                         Restablecer Búsqueda
                     </a>
@@ -90,16 +90,16 @@
             @if($elementos->count() > 0)
                 <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
                     @foreach ($elementos as $elemento)
-                        <div class="bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col overflow-hidden group">
+                        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col overflow-hidden group">
 
                             {{-- Imagen o placeholder --}}
-                            <div class="h-32 bg-slate-50 flex items-center justify-center border-b border-slate-100 relative overflow-hidden">
+                            <div class="h-32 bg-slate-50 dark:bg-slate-800/50 flex items-center justify-center border-b border-slate-100 dark:border-slate-800 relative overflow-hidden">
                                 @if($elemento->imagen)
                                     <img src="{{ asset('storage/' . $elemento->imagen) }}"
                                          alt="{{ $elemento->nombre }}"
                                          class="h-full w-full object-contain p-3 group-hover:scale-105 transition-transform duration-500">
                                 @else
-                                    <div class="flex flex-col items-center gap-1.5 text-slate-200">
+                                    <div class="flex flex-col items-center gap-1.5 text-slate-200 dark:text-slate-700">
                                         <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
                                         <span class="text-[8px] font-black uppercase tracking-widest">Sin imagen</span>
                                     </div>
@@ -113,32 +113,32 @@
                             {{-- Contenido --}}
                             <div class="p-3 flex flex-col flex-grow gap-2">
                                 <div>
-                                    <h3 class="font-black text-[#00324D] text-[13px] leading-tight line-clamp-1 group-hover:text-[#39A900] transition-colors">
+                                    <h3 class="font-black text-[#00324D] dark:text-white text-[13px] leading-tight line-clamp-1 group-hover:text-[#39A900] transition-colors">
                                         {{ $elemento->nombre }}
                                     </h3>
-                                    <p class="text-[9px] font-mono font-bold text-slate-400 mt-0.5">{{ $elemento->codigo_sena }}</p>
+                                    <p class="text-[9px] font-mono font-bold text-slate-400 dark:text-slate-500 mt-0.5">{{ $elemento->codigo_sena }}</p>
                                 </div>
 
                                 <div class="mt-auto">
                                     @php $sancionActual = Auth::user()->obtenerSancionActiva(); @endphp
                                     @if($sancionActual)
-                                        <div class="w-full p-2 bg-rose-50 border border-rose-100 rounded-xl text-center">
-                                            <p class="text-[9px] font-black text-rose-600 uppercase tracking-widest flex items-center justify-center gap-1 mb-1">
+                                        <div class="w-full p-2 bg-rose-50 dark:bg-rose-900/20 border border-rose-100 dark:border-rose-900/30 rounded-xl text-center">
+                                            <p class="text-[9px] font-black text-rose-600 dark:text-rose-400 uppercase tracking-widest flex items-center justify-center gap-1 mb-1">
                                                 <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/></svg>
                                                 Cuenta Sancionada
                                             </p>
-                                            <p class="text-[10px] font-bold text-slate-700 leading-tight mb-1">
-                                                Motivo: <span class="text-slate-500 font-medium italic">"{{ $sancionActual->motivo }}"</span>
+                                            <p class="text-[10px] font-bold text-slate-700 dark:text-slate-300 leading-tight mb-1">
+                                                Motivo: <span class="text-slate-500 dark:text-slate-500 font-medium italic">"{{ $sancionActual->motivo }}"</span>
                                             </p>
-                                            <p class="text-[8px] font-black text-slate-400">Hasta: {{ $sancionActual->fecha_fin->format('d/m/Y') }}</p>
+                                            <p class="text-[8px] font-black text-slate-400 dark:text-slate-600">Hasta: {{ $sancionActual->fecha_fin->format('d/m/Y') }}</p>
                                         </div>
                                     @elseif(Auth::user()->estaSancionado())
-                                        <div class="w-full py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-center">
-                                            <p class="text-[8px] font-black text-slate-400 uppercase tracking-wider">🔒 Bloqueado administrativamente</p>
+                                        <div class="w-full py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-center">
+                                            <p class="text-[8px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-wider">🔒 Bloqueado administrativamente</p>
                                         </div>
                                     @else
                                         <button @click="openModal = true; elementoId = {{ $elemento->id }}; elementoNombre = '{{ $elemento->nombre }}'"
-                                                class="w-full py-2 bg-[#39A900] hover:bg-green-700 text-white text-[10px] font-black uppercase tracking-widest rounded-lg transition-all active:scale-95 shadow-sm shadow-green-100 flex items-center justify-center gap-1.5">
+                                                class="w-full py-2 bg-[#39A900] hover:bg-green-700 text-white text-[10px] font-black uppercase tracking-widest rounded-lg transition-all active:scale-95 shadow-sm shadow-green-100 dark:shadow-none flex items-center justify-center gap-1.5">
                                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
                                             Solicitar
                                         </button>
@@ -152,11 +152,11 @@
             @else
                 {{-- Estado vacío --}}
                 <div class="flex flex-col items-center justify-center py-20 text-center">
-                    <div class="w-20 h-20 bg-slate-50 rounded-3xl flex items-center justify-center mb-5 border border-slate-100">
-                        <svg class="w-10 h-10 text-slate-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                    <div class="w-20 h-20 bg-slate-50 dark:bg-slate-800 rounded-3xl flex items-center justify-center mb-5 border border-slate-100 dark:border-slate-700">
+                        <svg class="w-10 h-10 text-slate-200 dark:text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                     </div>
-                    <p class="font-black text-[#00324D] text-lg mb-1">Sin resultados</p>
-                    <p class="text-sm text-slate-400 mb-5">No hay elementos disponibles con ese criterio de búsqueda.</p>
+                    <p class="font-black text-[#00324D] dark:text-white text-lg mb-1">Sin resultados</p>
+                    <p class="text-sm text-slate-400 dark:text-slate-500 mb-5">No hay elementos disponibles con ese criterio de búsqueda.</p>
                     <a href="{{ route('user.catalogo') }}"
                        class="px-6 py-2.5 bg-[#39A900] text-white text-xs font-black uppercase tracking-widest rounded-xl transition hover:bg-green-700 active:scale-95">
                         Ver todos
@@ -186,11 +186,11 @@
             
             <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
                 {{-- Overlay --}}
-                <div class="fixed inset-0 transition-opacity bg-slate-900/60 backdrop-blur-sm" @click="openModal = false"></div>
+                <div class="fixed inset-0 transition-opacity bg-slate-900/60 dark:bg-black/80 backdrop-blur-sm" @click="openModal = false"></div>
 
                 <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
 
-                <div class="inline-block overflow-hidden text-left align-bottom transition-all transform bg-white rounded-3xl shadow-2xl sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
+                <div class="inline-block overflow-hidden text-left align-bottom transition-all transform bg-white dark:bg-slate-900 rounded-3xl shadow-2xl sm:my-8 sm:align-middle sm:max-w-lg sm:w-full border dark:border-slate-800"
                      x-transition:enter="transition ease-out duration-300"
                      x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                      x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
@@ -200,15 +200,15 @@
                     
                     <div class="px-6 pt-6 pb-4">
                         <div class="flex items-center justify-between mb-6">
-                            <h3 class="text-xl font-black text-[#00324D] tracking-tight">Solicitud de Préstamo</h3>
-                            <button @click="openModal = false" class="text-slate-400 hover:text-rose-500 transition-colors">
+                            <h3 class="text-xl font-black text-[#00324D] dark:text-white tracking-tight">Solicitud de Préstamo</h3>
+                            <button @click="openModal = false" class="text-slate-400 dark:text-slate-500 hover:text-rose-500 transition-colors">
                                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                             </button>
                         </div>
 
-                        <div class="bg-slate-50 rounded-2xl p-4 mb-6 border border-slate-100">
-                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Elemento seleccionado</p>
-                            <p class="text-sm font-black text-[#00324D]" x-text="elementoNombre"></p>
+                        <div class="bg-slate-50 dark:bg-slate-800 rounded-2xl p-4 mb-6 border border-slate-100 dark:border-slate-700">
+                            <p class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1">Elemento seleccionado</p>
+                            <p class="text-sm font-black text-[#00324D] dark:text-white" x-text="elementoNombre"></p>
                         </div>
 
                         <form :action="'{{ route('user.solicitar') }}'" method="POST" @submit="submitting = true">
@@ -218,39 +218,39 @@
                             <div class="space-y-4">
                                 {{-- Fecha Inicio --}}
                                 <div>
-                                    <label for="fecha_inicio" class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-1">¿Cuándo lo necesitas? (Inicio)</label>
+                                    <label for="fecha_inicio" class="block text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-2 ml-1">¿Cuándo lo necesitas? (Inicio)</label>
                                     <input type="datetime-local" 
                                            id="fecha_inicio" 
                                            name="fecha_inicio" 
                                            required
-                                           class="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl text-sm font-bold text-[#00324D] focus:ring-4 focus:ring-[#39A900]/10 focus:border-[#39A900] transition-all outline-none">
+                                           class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-xl text-sm font-bold text-[#00324D] dark:text-white focus:ring-4 focus:ring-[#39A900]/10 focus:border-[#39A900] transition-all outline-none">
                                 </div>
 
                                 {{-- Fecha Fin --}}
                                 <div>
-                                    <label for="fecha_devolucion_esperada" class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-1">¿Cuándo lo devuelves? (Fin)</label>
+                                    <label for="fecha_devolucion_esperada" class="block text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-2 ml-1">¿Cuándo lo devuelves? (Fin)</label>
                                     <input type="datetime-local" 
                                            id="fecha_devolucion_esperada" 
                                            name="fecha_devolucion_esperada" 
                                            required
-                                           class="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl text-sm font-bold text-[#00324D] focus:ring-4 focus:ring-[#39A900]/10 focus:border-[#39A900] transition-all outline-none">
-                                    <p class="text-[9px] text-slate-400 mt-2 ml-1 italic font-medium">Define el rango exacto de tiempo para el préstamo.</p>
+                                           class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-xl text-sm font-bold text-[#00324D] dark:text-white focus:ring-4 focus:ring-[#39A900]/10 focus:border-[#39A900] transition-all outline-none">
+                                    <p class="text-[9px] text-slate-400 dark:text-slate-600 mt-2 ml-1 italic font-medium">Define el rango exacto de tiempo para el préstamo.</p>
                                 </div>
 
                                 <div>
-                                    <label for="observaciones" class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-1">Propósito / Observaciones</label>
+                                    <label for="observaciones" class="block text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-2 ml-1">Propósito / Observaciones</label>
                                     <textarea id="observaciones" 
                                               name="observaciones" 
                                               rows="2" 
                                               placeholder="¿Para qué necesitas el equipo?"
-                                              class="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl text-sm font-medium text-[#00324D] focus:ring-4 focus:ring-[#39A900]/10 focus:border-[#39A900] transition-all outline-none resize-none placeholder:text-slate-300"></textarea>
+                                              class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-xl text-sm font-medium text-[#00324D] dark:text-white focus:ring-4 focus:ring-[#39A900]/10 focus:border-[#39A900] transition-all outline-none resize-none placeholder:text-slate-300 dark:placeholder:text-slate-600"></textarea>
                                 </div>
                             </div>
 
                             <div class="mt-8 flex gap-3">
                                 <button type="button" 
                                         @click="openModal = false"
-                                        class="flex-1 px-6 py-3 border border-slate-200 rounded-xl text-xs font-black text-slate-500 uppercase tracking-widest hover:bg-slate-50 transition-all active:scale-95">
+                                        class="flex-1 px-6 py-3 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest hover:bg-slate-50 dark:hover:bg-slate-800 transition-all active:scale-95">
                                     Cancelar
                                 </button>
                                 <button type="submit"

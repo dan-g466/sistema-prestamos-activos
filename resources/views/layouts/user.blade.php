@@ -6,6 +6,26 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>SENA - Portal Aprendiz</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        sena: '#39A900',
+                        'sena-dark': '#00324D',
+                    }
+                }
+            }
+        }
+    </script>
+    <script>
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
+    </script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
     <style>
@@ -13,7 +33,8 @@
         body { font-family: 'Outfit', sans-serif; }
         .custom-scrollbar::-webkit-scrollbar { width: 4px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 10px; }
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
         .bg-pattern {
             background-image: radial-gradient(#39A900 0.5px, transparent 0.5px);
             background-size: 24px 24px;
@@ -24,10 +45,28 @@
             backdrop-filter: blur(20px) saturate(180%);
             -webkit-backdrop-filter: blur(20px) saturate(180%);
         }
+        .dark .glass-header {
+            background: rgba(15, 23, 42, 0.8);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
     </style>
 </head>
 
-<body class="bg-[#fcfdf2] text-slate-900 antialiased overflow-hidden" x-data="{ sidebarOpen: window.innerWidth >= 1024 }" @resize.window="sidebarOpen = window.innerWidth >= 1024">
+<body class="bg-[#fcfdf2] dark:bg-slate-950 text-slate-900 dark:text-slate-100 antialiased overflow-hidden" 
+      x-data="{ 
+        sidebarOpen: window.innerWidth >= 1024,
+        darkMode: localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches),
+        toggleTheme() {
+            this.darkMode = !this.darkMode;
+            if (this.darkMode) {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('color-theme', 'dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('color-theme', 'light');
+            }
+        }
+      }" @resize.window="sidebarOpen = window.innerWidth >= 1024">
     {{-- Textura de Fondo --}}
     <div class="fixed inset-0 bg-pattern pointer-events-none"></div>
 
@@ -120,22 +159,34 @@
         <div class="flex-1 flex flex-col overflow-hidden transition-all duration-500" :class="sidebarOpen && window.innerWidth >= 1024 ? 'lg:ml-64' : ''">
             
             {{-- Global Header Glassmorphism --}}
-            <header class="h-20 glass-header sticky top-0 z-30 flex items-center justify-between px-8 border-b border-white/40 shadow-sm">
+            <header class="h-20 glass-header sticky top-0 z-30 flex items-center justify-between px-8 border-b border-white/40 dark:border-slate-800 shadow-sm">
                 <div class="flex items-center gap-6">
-                    <button @click="sidebarOpen = !sidebarOpen" class="w-12 h-12 rounded-2xl bg-white border border-slate-100 text-slate-400 hover:text-[#39A900] hover:shadow-lg transition-all flex items-center justify-center active:scale-90">
+                    <button @click="sidebarOpen = !sidebarOpen" class="w-12 h-12 rounded-2xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 text-slate-400 dark:text-slate-500 hover:text-[#39A900] dark:hover:text-[#39A900] hover:shadow-lg transition-all flex items-center justify-center active:scale-90">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
                     </button>
-                    <div class="hidden sm:block">
+                    <div class="hidden md:flex flex-col">
+                        <h3 class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-[0.3em] leading-none mb-1">Portal Operativo</h3>
+                        <p class="text-xs font-bold text-[#00324D] dark:text-white capitalize">{{ now()->isoFormat('dddd, D [de] MMMM') }}</p>
                     </div>
                 </div>
 
                 <div class="flex items-center gap-5">
-                    <div class="flex items-center gap-4 pl-6 border-l border-slate-100">
+                    <!-- Theme Toggle -->
+                    <button @click="toggleTheme()" 
+                            class="h-11 w-11 rounded-2xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 flex items-center justify-center text-slate-400 dark:text-slate-500 hover:text-[#39A900] hover:bg-slate-50 dark:hover:bg-slate-700 transition-all cursor-pointer group shadow-sm">
+                        <svg x-show="!darkMode" class="w-5 h-5 group-hover:rotate-12 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+                        </svg>
+                        <svg x-show="darkMode" class="w-5 h-5 group-hover:rotate-90 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M12 5a7 7 0 100 14 7 7 0 000-14z"/>
+                        </svg>
+                    </button>
+                    <div class="flex items-center gap-4 pl-6 border-l border-slate-100 dark:border-slate-800 transition-colors">
                         <div class="text-right hidden md:block">
-                            <p class="text-sm font-black text-[#00324D] leading-none mb-1">{{ Auth::user()->name }}</p>
+                            <p class="text-sm font-black text-[#00324D] dark:text-white leading-none mb-1">{{ Auth::user()->name }}</p>
                             <span class="text-[9px] font-black text-[#39A900] uppercase tracking-widest">Activo • Aprendiz</span>
                         </div>
-                        <div class="w-12 h-12 bg-[#39A900] rounded-2xl flex items-center justify-center text-white text-xl font-black shadow-xl shadow-green-900/10 border-2 border-white ring-4 ring-slate-50">
+                        <div class="w-12 h-12 bg-[#39A900] rounded-2xl flex items-center justify-center text-white text-xl font-black shadow-xl shadow-green-900/10 border-2 border-white dark:border-slate-800 ring-4 ring-slate-50 dark:ring-slate-900 transition-all">
                             {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
                         </div>
                     </div>
@@ -159,5 +210,13 @@
             </main>
         </div>
     </div>
+    <script>
+        // Protección contra retroceso (back button) después de cerrar sesión
+        window.addEventListener('pageshow', function(event) {
+            if (event.persisted || (typeof window.performance != 'undefined' && window.performance.navigation.type === 2)) {
+                window.location.reload();
+            }
+        });
+    </script>
 </body>
 </html>

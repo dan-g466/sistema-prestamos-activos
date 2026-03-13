@@ -1,10 +1,10 @@
 <x-admin-layout>
     <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-2">
         <div>
-            <h2 class="font-black text-xl text-[#00324D] leading-tight tracking-tight">
+            <h2 class="font-black text-xl text-[#00324D] dark:text-white leading-tight tracking-tight shadow-sm">
                 {{ __('Inventario') }} <span class="text-[#39A900]">SENA</span>
             </h2>
-            <p class="text-slate-600 text-[9px] uppercase font-black tracking-[0.2em]">Gestión de activos</p>
+            <p class="text-slate-600 dark:text-slate-400 text-[9px] uppercase font-black tracking-[0.2em]">Gestión de activos</p>
         </div>
         <div class="flex items-center gap-2 w-full md:w-auto">
             <a href="{{ route('admin.elementos.create') }}" class="bg-[#39A900] hover:bg-[#2d8500] text-white font-black py-1.5 px-5 rounded-xl shadow-lg shadow-[#39A900]/20 transition-all duration-300 transform hover:-translate-y-0.5 active:scale-95 flex items-center gap-2 group text-[10px] uppercase tracking-widest">
@@ -16,7 +16,7 @@
 
     <div class="max-w-7xl mx-auto mb-2 px-4 sm:px-0">
         <!-- Barra de Filtros Compacta -->
-        <div class="bg-white/70 backdrop-blur-xl border border-white/40 p-2 rounded-2xl shadow-sm">
+        <div class="bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl border border-white/40 dark:border-slate-800 p-2 rounded-2xl shadow-sm">
             <form action="{{ route('admin.elementos.index') }}" method="GET" class="flex flex-col lg:flex-row items-center gap-4">
                 <!-- Búsqueda -->
                 <div class="w-full lg:flex-1">
@@ -26,13 +26,13 @@
                         </div>
                         <input type="text" name="search" value="{{ request('search') }}" 
                                placeholder="Buscar por nombre o código..." 
-                               class="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-[#00324D] focus:ring-4 focus:ring-[#39A900]/5 focus:border-[#39A900] transition-all placeholder:font-medium">
+                               class="w-full pl-10 pr-4 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-bold text-[#00324D] dark:text-white focus:ring-4 focus:ring-[#39A900]/5 focus:border-[#39A900] transition-all placeholder:font-medium">
                     </div>
                 </div>
 
                 <div class="flex flex-wrap items-center gap-2 w-full lg:w-auto">
                     <!-- Categoría -->
-                    <select name="categoria_id" class="flex-1 lg:w-44 px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-bold text-[#00324D] focus:border-[#39A900] cursor-pointer outline-none">
+                    <select name="categoria_id" class="flex-1 lg:w-44 px-3 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-bold text-[#00324D] dark:text-white focus:border-[#39A900] cursor-pointer outline-none">
                         <option value="">Categoría: Todas</option>
                         @foreach($categorias as $cat)
                             <option value="{{ $cat->id }}" {{ request('categoria_id') == $cat->id ? 'selected' : '' }}>{{ $cat->nombre }}</option>
@@ -40,7 +40,7 @@
                     </select>
 
                     <!-- Estado -->
-                    <select name="estado" class="flex-1 lg:w-44 px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-bold text-[#00324D] focus:border-[#39A900] cursor-pointer outline-none">
+                    <select name="estado" class="flex-1 lg:w-44 px-3 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-bold text-[#00324D] dark:text-white focus:border-[#39A900] cursor-pointer outline-none">
                         <option value="">Estado: Todos</option>
                         <option value="Disponible" {{ request('estado') == 'Disponible' ? 'selected' : '' }}>Disponible</option>
                         <option value="Prestado" {{ request('estado') == 'Prestado' ? 'selected' : '' }}>Prestado</option>
@@ -51,7 +51,7 @@
                     <button type="submit" class="p-2 bg-[#39A900] text-white rounded-xl hover:bg-[#2d8500] transition-all active:scale-95 shadow-lg shadow-[#39A900]/10">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/></svg>
                     </button>
-                    <a href="{{ route('admin.elementos.index') }}" class="p-2 bg-white border border-blue-200 text-blue-500 hover:bg-blue-50 rounded-xl transition-all" title="Limpiar">
+                    <a href="{{ route('admin.elementos.index') }}" class="p-2 bg-white dark:bg-slate-800 border border-blue-200 dark:border-slate-700 text-blue-500 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-700 rounded-xl transition-all shadow-sm" title="Limpiar">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
                     </a>
                 </div>
@@ -71,16 +71,16 @@
              x-transition:leave-start="opacity-100 transform translate-y-0 scale-100"
              x-transition:leave-end="opacity-0 transform translate-y-[-20px] scale-95"
              class="fixed top-20 right-6 z-[100] max-w-sm w-full pointer-events-auto">
-            <div class="bg-white border-l-4 border-[#39A900] shadow-[0_10px_30px_-5px_rgba(0,0,0,0.1)] rounded-2xl p-4 flex items-center justify-between group">
+            <div class="bg-white dark:bg-slate-900 border-l-4 border-[#39A900] shadow-[0_10px_30px_-5px_rgba(0,0,0,0.1)] dark:border dark:border-l-4 dark:border-slate-800 dark:border-l-[#39A900] rounded-2xl p-4 flex items-center justify-between group">
                 <div class="flex items-center gap-3">
-                    <div class="bg-green-50 p-2 rounded-xl">
+                    <div class="bg-green-50 dark:bg-green-900/10 p-2 rounded-xl">
                         <svg class="w-5 h-5 text-[#39A900]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                         </svg>
                     </div>
                     <div>
-                        <h4 class="text-[10px] font-black uppercase tracking-widest text-[#00324D] leading-none mb-1">¡Éxito!</h4>
-                        <p class="text-[11px] font-bold text-slate-600 leading-tight">{{ session('success') }}</p>
+                        <h4 class="text-[10px] font-black uppercase tracking-widest text-[#00324D] dark:text-white leading-none mb-1">¡Éxito!</h4>
+                        <p class="text-[11px] font-bold text-slate-600 dark:text-slate-400 leading-tight">{{ session('success') }}</p>
                     </div>
                 </div>
                 <button @click="show = false" class="text-slate-300 hover:text-slate-500 transition-colors p-1">
@@ -90,12 +90,12 @@
         </div>
     @endif
 
-    <div class="max-w-7xl mx-auto">
-        <div class="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
+    <div class="max-w-7xl mx-auto transition-all duration-300">
+        <div class="bg-white dark:bg-slate-900 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-800 overflow-hidden">
             <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-slate-100">
+                <table class="min-w-full divide-y divide-slate-100 dark:divide-slate-800">
                     <thead>
-                        <tr class="bg-slate-50/50 uppercase tracking-widest text-slate-400">
+                        <tr class="bg-slate-50/50 dark:bg-slate-800/50 uppercase tracking-widest text-slate-400 dark:text-slate-500">
                             <th class="px-4 py-3 text-left text-[8px] font-black uppercase tracking-[0.2em]">Identificación</th>
                             <th class="px-4 py-3 text-left text-[8px] font-black uppercase tracking-[0.2em]">Nombre</th>
                             <th class="px-4 py-3 text-left text-[8px] font-black uppercase tracking-[0.2em]">Categoría</th>
@@ -103,12 +103,12 @@
                             <th class="px-4 py-3 text-right text-[8px] font-black uppercase tracking-[0.2em]">Acciones</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-slate-100 bg-white">
+                    <tbody class="divide-y divide-slate-100 dark:divide-slate-800 bg-white dark:bg-slate-900">
                         @foreach ($elementos as $elemento)
-                            <tr class="hover:bg-slate-50/50 transition-colors group/row text-[11px]">
-                                <td class="px-4 py-4 whitespace-nowrap">
+                            <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/50 transition-colors group/row text-[11px]">
+                                <td class="px-4 py-4 whitespace-nowrap text-slate-700 dark:text-slate-300">
                                     <div class="flex items-center gap-3">
-                                        <div class="h-10 w-10 flex-shrink-0 bg-slate-50 rounded-xl border border-slate-100 flex items-center justify-center overflow-hidden">
+                                        <div class="h-10 w-10 flex-shrink-0 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-700 flex items-center justify-center overflow-hidden">
                                             @if($elemento->imagen)
                                                 <img src="{{ asset('storage/' . $elemento->imagen) }}" class="h-full w-full object-contain">
                                             @else
@@ -116,7 +116,7 @@
                                             @endif
                                         </div>
                                         <div>
-                                            <span class="font-mono font-black text-[#00324D] bg-slate-100 px-2 py-0.5 rounded border border-slate-200 block text-[10px]">
+                                            <span class="font-mono font-black text-[#00324D] dark:text-white bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded border border-slate-200 dark:border-slate-700 block text-[10px]">
                                                 {{ $elemento->codigo_sena }}
                                             </span>
                                         </div>
@@ -124,7 +124,7 @@
                                 </td>
                                 <td class="px-4 py-4">
                                     <div class="flex flex-col">
-                                        <span class="font-black text-[#00324D] uppercase group-hover/row:text-[#39A900] tracking-tight leading-tight mb-1">
+                                        <span class="font-black text-[#00324D] dark:text-white uppercase group-hover/row:text-[#39A900] tracking-tight leading-tight mb-1">
                                             {{ $elemento->nombre }}
                                         </span>
                                         @if($elemento->descripcion)
@@ -133,7 +133,7 @@
                                     </div>
                                 </td>
                                 <td class="px-4 py-4 whitespace-nowrap">
-                                    <span class="px-3 py-1 bg-slate-50 text-[9px] font-black text-slate-400 uppercase tracking-widest rounded-lg border border-slate-100">{{ $elemento->categoria->nombre }}</span>
+                                    <span class="px-3 py-1 bg-slate-50 dark:bg-slate-800 text-[9px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest rounded-lg border border-slate-100 dark:border-slate-700">{{ $elemento->categoria->nombre }}</span>
                                 </td>
                                 <td class="px-4 py-2 whitespace-nowrap">
                                     @php
@@ -153,17 +153,17 @@
                                 <td class="px-4 py-2 whitespace-nowrap text-right">
                                     <div class="flex justify-end gap-1 transition-all">
                                         <a href="{{ route('admin.elementos.show', $elemento) }}" 
-                                           class="p-1.5 bg-blue-50 text-[#00324D] hover:bg-[#00324D] hover:text-white rounded-lg transition-all border border-blue-200 hover:border-[#00324D] shadow-sm active:scale-90" title="Ver Detalle">
+                                           class="p-1.5 bg-blue-50 dark:bg-blue-900/20 text-[#00324D] dark:text-blue-400 hover:bg-[#00324D] dark:hover:bg-blue-600 hover:text-white rounded-lg transition-all border border-blue-200 dark:border-blue-800 shadow-sm active:scale-90" title="Ver Detalle">
                                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
                                         </a>
                                         <a href="{{ route('admin.elementos.edit', $elemento) }}" 
-                                           class="p-1.5 bg-green-50 text-[#39A900] hover:bg-[#39A900] hover:text-white rounded-lg transition-all border border-green-200 hover:border-[#39A900] shadow-sm active:scale-90" title="Editar">
+                                           class="p-1.5 bg-green-50 dark:bg-green-900/20 text-[#39A900] dark:text-green-400 hover:bg-[#39A900] dark:hover:bg-green-600 hover:text-white rounded-lg transition-all border border-green-200 dark:border-green-800 shadow-sm active:scale-90" title="Editar">
                                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
                                         </a>
                                         <form id="delete-form-{{ $elemento->id }}" action="{{ route('admin.elementos.destroy', $elemento) }}" method="POST" class="inline">
                                             @csrf @method('DELETE')
                                             <button type="button" 
-                                                    class="p-1.5 bg-rose-50 text-rose-600 hover:bg-rose-600 hover:text-white rounded-lg transition-all border border-rose-200 hover:border-rose-600 shadow-sm active:scale-90" 
+                                                    class="p-1.5 bg-rose-50 dark:bg-rose-900/20 text-rose-600 dark:text-rose-400 hover:bg-rose-600 dark:hover:bg-rose-500 hover:text-white rounded-lg transition-all border border-rose-200 dark:border-rose-800 shadow-sm active:scale-90" 
                                                     onclick="confirmDelete('delete-form-{{ $elemento->id }}', '¿Deseas eliminar este elemento del inventario?')" 
                                                     title="Eliminar">
                                                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>

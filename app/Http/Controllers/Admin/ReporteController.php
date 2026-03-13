@@ -69,14 +69,16 @@ class ReporteController extends Controller
     public function pdf(Request $request)
     {
         ini_set('memory_limit', '512M');
-        ini_set('max_execution_time', '300');
+        ini_set('max_execution_time', '120');
 
         $tipo = $request->query('tipo', 'inventario');
 
         if ($tipo === 'inventario') {
-            $query = Elemento::with('categoria');
+            // Optimización: Solo traer las columnas necesarias y cargar categorías de forma ligera
+            $query = Elemento::select(['id', 'nombre', 'codigo_sena', 'categoria_id', 'descripcion', 'estado'])
+                            ->with('categoria:id,nombre');
 
-            // Aplicar filtros recibidos
+            // Aplicar filtros recibidos (igual que en index)
             if ($request->filled('search')) {
                 $search = $request->search;
                 $query->where(function($q) use ($search) {
@@ -95,26 +97,38 @@ class ReporteController extends Controller
 
             $elementos = $query->orderBy('nombre')->get();
 
+            // Configuración de alto rendimiento para DomPDF
             $pdf = Pdf::loadView('admin.reportes.pdf-inventario', compact('elementos'))
                       ->setPaper('a4', 'landscape')
                       ->setOptions([
-                          'dpi' => 150, 
-                          'defaultFont' => 'sans-serif', 
+                          'dpi' => 96,                    // DPI estándar para mayor velocidad
+                          'defaultFont' => 'helvetica',  // Fuente base (no requiere embebido, es más rápida)
                           'isHtml5ParserEnabled' => true, 
-                          'isRemoteEnabled' => true
+                          'isRemoteEnabled' => false,     // Deshabilitar para evitar peticiones externas lentas
+                          'enable_font_subsetting' => false, // Acelera el renderizado al no procesar subconjuntos de fuentes
+                          'debugLayout' => false
                       ]);
             
-            return $pdf->download('inventario-sena-' . now()->format('Y-m-d') . '.pdf');
+            return $pdf->download('inventario-sena-' . now()->format('d-m-Y') . '.pdf');
         }
 
         if ($tipo === 'prestamos_mes') {
-            $prestamos = Prestamo::with(['user', 'elemento'])
+            // Optimización de préstamos
+            $prestamos = Prestamo::select(['id', 'user_id', 'elemento_id', 'created_at', 'fecha_devolucion_esperada', 'estado'])
+                ->with(['user:id,name', 'elemento:id,nombre,codigo_sena'])
                 ->whereMonth('created_at', Carbon::now()->month)
                 ->orderBy('created_at', 'desc')
                 ->get();
+
             $pdf = Pdf::loadView('admin.reportes.pdf-prestamos', compact('prestamos'))
                       ->setPaper('a4', 'portrait')
-                      ->setOptions(['dpi' => 150, 'defaultFont' => 'sans-serif']);
+                      ->setOptions([
+                          'dpi' => 96,
+                          'defaultFont' => 'helvetica',
+                          'isRemoteEnabled' => false,
+                          'enable_font_subsetting' => false
+                      ]);
+
             return $pdf->download('prestamos-' . now()->format('Y-m') . '.pdf');
         }
 

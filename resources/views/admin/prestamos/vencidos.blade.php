@@ -37,7 +37,11 @@
                     <tbody class="bg-white divide-y divide-slate-100">
                         @forelse ($prestamos as $prestamo)
                             @php
-                                $diasDiferencia = now()->diffInDays($prestamo->fecha_devolucion_esperada);
+                                $tiempoAtrasado = $prestamo->fecha_devolucion_esperada->diffForHumans(now(), [
+                                    'syntax' => \Carbon\CarbonInterface::DIFF_ABSOLUTE,
+                                    'parts' => 2,
+                                    'skip' => ['week'],
+                                ]);
                             @endphp
                             <tr class="hover:bg-red-50/30 transition-colors group/row text-[11px] bg-rose-50/10">
                                 <td class="px-6 py-2">
@@ -49,7 +53,6 @@
                                             <div class="font-black text-[#00324D] uppercase leading-tight">
                                                 {{ $prestamo->user->name }}
                                             </div>
-                                            <div class="text-[9px] text-red-600 font-bold tracking-wider">Tel: {{ $prestamo->user->telefono ?? 'Sin número' }}</div>
                                         </div>
                                     </div>
                                 </td>
@@ -62,9 +65,9 @@
                                 <td class="px-6 py-2">
                                     <div class="flex flex-col gap-1">
                                         <span class="inline-flex items-center gap-1.5 px-2 py-0.5 bg-rose-600 text-white rounded-full text-[8px] font-black uppercase tracking-widest w-fit shadow-lg shadow-rose-600/20 animate-pulse">
-                                            {{ $diasDiferencia }} Días de Retraso
+                                            {{ $tiempoAtrasado }} de Retraso
                                         </span>
-                                        <span class="text-[8px] text-slate-400 font-bold ml-1 uppercase">Debía: {{ $prestamo->fecha_devolucion_esperada->format('d M, Y') }}</span>
+                                        <span class="text-[8px] text-slate-400 font-bold ml-1 uppercase">Debía Entregar: {{ $prestamo->fecha_devolucion_esperada->format('d/m/Y - h:i A') }}</span>
                                     </div>
                                 </td>
 

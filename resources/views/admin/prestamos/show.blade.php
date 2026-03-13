@@ -10,6 +10,12 @@
             default     => ['bg' => 'from-slate-400 to-slate-500', 'light' => 'bg-slate-50', 'text' => 'text-slate-600', 'icon' => 'M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z']
         };
         $esVencido = $prestamo->estado === 'Activo' && $prestamo->fecha_devolucion_esperada->isPast();
+        $tiempoAtrasado = $esVencido ? $prestamo->fecha_devolucion_esperada->diffForHumans(now(), [
+            'syntax' => \Carbon\CarbonInterface::DIFF_ABSOLUTE,
+            'parts' => 2,
+            'skip' => ['week'],
+        ]) : null;
+
         if($esVencido) {
             // Mantenemos el fondo verde institucional pero usamos alertas en texto/iconos
             $estadoConfig['text'] = 'text-rose-600';
@@ -20,18 +26,18 @@
     {{-- Breadcrumbs & Header Compact --}}
     <div class="mb-4 flex flex-col md:flex-row md:items-center justify-between gap-2">
         <div>
-            <nav class="flex items-center gap-1.5 text-[9px] font-black uppercase tracking-widest text-slate-400 mb-1">
+            <nav class="flex items-center gap-1.5 text-[9px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500 mb-1">
                 <a href="{{ route('admin.prestamos.index') }}" class="hover:text-[#39A900] transition-colors">Préstamos</a>
                 <svg class="w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7"/></svg>
                 <span class="text-[#39A900]">#{{ $prestamo->id }}</span>
             </nav>
-            <h2 class="text-xl font-black text-slate-900 tracking-tighter uppercase leading-none">Detalle <span class="text-[#39A900]">Préstamo</span></h2>
+            <h2 class="text-xl font-black text-slate-900 dark:text-white tracking-tighter uppercase leading-none">Detalle <span class="text-[#39A900]">Préstamo</span></h2>
         </div>
         <div class="flex items-center gap-2">
-            <a href="{{ route('admin.prestamos.index') }}" class="px-4 py-2 bg-white border border-slate-100 text-slate-900 text-[9px] font-black uppercase tracking-widest rounded-lg hover:bg-slate-50 shadow-sm transition-all active:scale-95">
+            <a href="{{ route('admin.prestamos.index') }}" class="px-4 py-2 bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 text-slate-900 dark:text-slate-300 text-[9px] font-black uppercase tracking-widest rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 shadow-sm transition-all active:scale-95">
                 Volver
             </a>
-            <a href="{{ route('admin.prestamos.edit', $prestamo) }}" class="px-4 py-2 bg-white border border-slate-100 text-[#39A900] text-[9px] font-black uppercase tracking-widest rounded-lg hover:bg-green-50 shadow-sm transition-all active:scale-95 flex items-center gap-1.5">
+            <a href="{{ route('admin.prestamos.edit', $prestamo) }}" class="px-4 py-2 bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 text-[#39A900] text-[9px] font-black uppercase tracking-widest rounded-lg hover:bg-green-50 dark:hover:bg-slate-700 shadow-sm transition-all active:scale-95 flex items-center gap-1.5">
                 <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
                 Editar
             </a>
@@ -51,7 +57,7 @@
                     <div class="flex items-center gap-2">
                         <span class="text-lg font-black text-white uppercase tracking-wider leading-none">{{ $prestamo->estado }}</span>
                         @if($esVencido)
-                            <span class="px-2 py-0.5 bg-white text-rose-600 rounded-full text-[8px] font-black animate-pulse shadow-md whitespace-nowrap leading-none">⚠ VENCIDO</span>
+                            <span class="px-2 py-0.5 bg-white text-rose-600 rounded-full text-[8px] font-black animate-pulse shadow-md whitespace-nowrap leading-none uppercase">⚠ Vencido (Lleva {{ $tiempoAtrasado }} de mora)</span>
                         @endif
                     </div>
                 </div>
@@ -69,9 +75,9 @@
         {{-- Column 1: The Actors --}}
         <div class="space-y-4">
             {{-- Solicitante --}}
-            <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-4 group">
-                <h3 class="text-[8px] font-black text-slate-400 uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
-                    <span class="w-1.5 h-1.5 rounded-full bg-slate-200"></span>
+            <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm p-4 group">
+                <h3 class="text-[8px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
+                    <span class="w-1.5 h-1.5 rounded-full bg-slate-200 dark:bg-slate-700"></span>
                     Solicitante
                 </h3>
                 <div class="flex items-center gap-3 mb-4">
@@ -79,25 +85,21 @@
                         {{ strtoupper(substr($prestamo->user->name, 0, 1)) }}
                     </div>
                     <div class="min-w-0">
-                        <p class="text-xs font-black text-slate-900 leading-tight mb-0.5 truncate">{{ $prestamo->user->name }}</p>
-                        <p class="text-[9px] font-bold text-slate-400 truncate">{{ $prestamo->user->email }}</p>
+                        <p class="text-xs font-black text-slate-900 dark:text-white leading-tight mb-0.5 truncate">{{ $prestamo->user->name }}</p>
+                        <p class="text-[9px] font-bold text-slate-400 dark:text-slate-500 truncate">{{ $prestamo->user->email }}</p>
                     </div>
                 </div>
-                <div class="grid grid-cols-2 gap-2 bg-slate-50/50 rounded-xl p-3 border border-slate-50">
+                <div class="grid grid-cols-2 gap-2 bg-slate-50/50 dark:bg-slate-800/50 rounded-xl p-3 border border-slate-50 dark:border-slate-800">
                     <div class="flex flex-col">
-                        <span class="text-[7px] font-black text-slate-400 uppercase tracking-widest mb-0.5">Documento</span>
-                        <span class="text-[10px] font-bold text-slate-900">{{ $prestamo->user->documento }}</span>
-                    </div>
-                    <div class="flex flex-col text-right">
-                        <span class="text-[7px] font-black text-slate-400 uppercase tracking-widest mb-0.5">Celular</span>
-                        <span class="text-[10px] font-bold text-slate-900">{{ $prestamo->user->telefono ?? 'N/A' }}</span>
+                        <span class="text-[7px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-0.5">Documento</span>
+                        <span class="text-[10px] font-bold text-slate-900 dark:text-slate-300">{{ $prestamo->user->documento }}</span>
                     </div>
                 </div>
             </div>
 
             {{-- Elemento --}}
-            <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-4 group">
-                <h3 class="text-[8px] font-black text-slate-400 uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
+            <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm p-4 group">
+                <h3 class="text-[8px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
                     <span class="w-1.5 h-1.5 rounded-full bg-[#39A900]"></span>
                     Elemento
                 </h3>
@@ -110,14 +112,14 @@
                         @endif
                     </div>
                     <div class="min-w-0">
-                        <p class="text-xs font-black text-slate-900 leading-tight mb-0.5 truncate uppercase">{{ $prestamo->elemento->nombre }}</p>
-                        <p class="text-[8px] font-black text-[#39A900] bg-green-50 px-1.5 py-0.5 rounded w-fit uppercase tracking-widest">{{ $prestamo->elemento->categoria->nombre }}</p>
+                        <p class="text-xs font-black text-slate-900 dark:text-white leading-tight mb-0.5 truncate uppercase">{{ $prestamo->elemento->nombre }}</p>
+                        <p class="text-[8px] font-black text-[#39A900] bg-green-50 dark:bg-green-900/20 px-1.5 py-0.5 rounded w-fit uppercase tracking-widest">{{ $prestamo->elemento->categoria->nombre }}</p>
                     </div>
                 </div>
-                <div class="bg-green-50/30 rounded-xl p-3 border border-green-50/50">
+                <div class="bg-green-50/30 dark:bg-green-900/5 rounded-xl p-3 border border-green-50/50 dark:border-green-900/10">
                     <div class="flex justify-between items-center">
                         <span class="text-[7px] font-black text-[#39A900] uppercase tracking-widest">Placa SENA</span>
-                        <span class="text-[10px] font-mono font-black text-slate-900">{{ $prestamo->elemento->codigo_sena }}</span>
+                        <span class="text-[10px] font-mono font-black text-slate-900 dark:text-slate-300">{{ $prestamo->elemento->codigo_sena }}</span>
                     </div>
                 </div>
             </div>
@@ -125,22 +127,22 @@
 
         {{-- Column 2: Timeline Compact --}}
         <div>
-            <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-4 h-full">
-                <h3 class="text-[8px] font-black text-slate-400 uppercase tracking-[0.2em] mb-6 flex items-center gap-2">
+            <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm p-4 h-full">
+                <h3 class="text-[8px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-[0.2em] mb-6 flex items-center gap-2">
                     <span class="w-4 h-[1px] bg-[#39A900]"></span>
                     {{ in_array($prestamo->estado, ['Pendiente', 'Rechazado']) ? 'Flujo de Solicitud' : 'Seguimiento de Préstamo' }}
                 </h3>
                 
                 <div class="space-y-4 relative">
-                    <div class="absolute left-[7px] top-1.5 bottom-4 w-[1px] bg-slate-100"></div>
+                    <div class="absolute left-[7px] top-1.5 bottom-4 w-[1px] bg-slate-100 dark:bg-slate-800"></div>
 
                     {{-- Punto 1: Solicitud --}}
                     <div class="relative pl-6">
-                        <div class="absolute left-0 top-1 h-3.5 w-3.5 rounded-full bg-white border border-slate-200 flex items-center justify-center z-10">
-                            <div class="w-1 h-1 rounded-full bg-slate-300"></div>
+                        <div class="absolute left-0 top-1 h-3.5 w-3.5 rounded-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 flex items-center justify-center z-10">
+                            <div class="w-1 h-1 rounded-full bg-slate-300 dark:bg-slate-600"></div>
                         </div>
-                        <p class="text-[7px] font-black text-slate-400 uppercase tracking-widest leading-none mb-0.5">Solicitud</p>
-                        <p class="text-[10px] font-bold text-slate-900">
+                        <p class="text-[7px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest leading-none mb-0.5">Solicitud</p>
+                        <p class="text-[10px] font-bold text-slate-900 dark:text-slate-300">
                             {{ $prestamo->fecha_solicitud->timezone('America/Bogota')->format('d/m/y - h:i A') }}
                         </p>
                     </div>
@@ -148,13 +150,13 @@
                     {{-- Punto 2: Entrega / Recogida --}}
                     <div class="relative pl-6">
                         @php $tieneEntrega = !empty($prestamo->fecha_inicio); @endphp
-                        <div class="absolute left-0 top-1 h-3.5 w-3.5 rounded-full bg-white border {{ $tieneEntrega ? 'border-[#39A900]' : 'border-slate-100 bg-slate-50' }} flex items-center justify-center z-10">
-                            <div class="w-1 h-1 rounded-full {{ $tieneEntrega ? 'bg-[#39A900]' : 'bg-slate-200' }}"></div>
+                        <div class="absolute left-0 top-1 h-3.5 w-3.5 rounded-full bg-white dark:bg-slate-900 border {{ $tieneEntrega ? 'border-[#39A900]' : 'border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800' }} flex items-center justify-center z-10">
+                            <div class="w-1 h-1 rounded-full {{ $tieneEntrega ? 'bg-[#39A900]' : 'bg-slate-200 dark:bg-slate-700' }}"></div>
                         </div>
-                        <p class="text-[7px] font-black text-slate-400 uppercase tracking-widest leading-none mb-0.5">
+                        <p class="text-[7px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest leading-none mb-0.5">
                             {{ $prestamo->estado === 'Pendiente' ? 'Pase por el equipo' : 'Entrega' }}
                         </p>
-                        <p class="text-[10px] font-bold {{ $tieneEntrega ? 'text-slate-900' : 'text-slate-400' }}">
+                        <p class="text-[10px] font-bold {{ $tieneEntrega ? 'text-slate-900 dark:text-slate-300' : 'text-slate-400 dark:text-slate-600' }}">
                             @if($tieneEntrega)
                                 {{ $prestamo->fecha_inicio->timezone('America/Bogota')->format('d/m/y - h:i A') }}
                             @else
@@ -165,25 +167,28 @@
 
                     {{-- Punto 3: Límite / Entrega Estimada --}}
                     <div class="relative pl-6">
-                        <div class="absolute left-0 top-1 h-3.5 w-3.5 rounded-full bg-white border {{ $esVencido ? 'border-rose-500 animate-pulse' : 'border-[#39A900]/30' }} flex items-center justify-center z-10">
+                        <div class="absolute left-0 top-1 h-3.5 w-3.5 rounded-full bg-white dark:bg-slate-900 border {{ $esVencido ? 'border-rose-500 animate-pulse' : 'border-[#39A900]/30' }} flex items-center justify-center z-10">
                             <div class="w-1 h-1 rounded-full {{ $esVencido ? 'bg-rose-600' : 'bg-[#39A900]' }}"></div>
                         </div>
-                        <p class="text-[7px] font-black text-slate-400 uppercase tracking-widest leading-none mb-0.5">
+                        <p class="text-[7px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest leading-none mb-0.5">
                             {{ $prestamo->estado === 'Pendiente' ? 'Entrega Estimada' : 'Límite de Devolución' }}
                         </p>
-                        <p class="text-[10px] font-bold {{ $esVencido ? 'text-rose-600' : 'text-slate-900' }}">
+                        <p class="text-[10px] font-bold {{ $esVencido ? 'text-rose-600' : 'text-slate-900 dark:text-slate-300' }}">
                             {{ $prestamo->fecha_devolucion_esperada ? $prestamo->fecha_devolucion_esperada->timezone('America/Bogota')->format('d/m/y - h:i A') : 'N/A' }}
                         </p>
+                        @if($esVencido)
+                            <p class="text-[8px] font-black text-rose-500 uppercase tracking-tighter mt-0.5">Retraso actual: {{ $tiempoAtrasado }}</p>
+                        @endif
                     </div>
 
                     {{-- Punto 4: Reingreso --}}
                     <div class="relative pl-6">
                         @php $tieneDevolucion = !empty($prestamo->fecha_devolucion_real); @endphp
-                        <div class="absolute left-0 top-1 h-3.5 w-3.5 rounded-full bg-white border {{ $tieneDevolucion ? 'border-green-600' : 'border-slate-100 bg-slate-50' }} flex items-center justify-center z-10">
-                            <div class="w-1 h-1 rounded-full {{ $tieneDevolucion ? 'bg-green-700' : 'bg-slate-200' }}"></div>
+                        <div class="absolute left-0 top-1 h-3.5 w-3.5 rounded-full bg-white dark:bg-slate-900 border {{ $tieneDevolucion ? 'border-green-600' : 'border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800' }} flex items-center justify-center z-10">
+                            <div class="w-1 h-1 rounded-full {{ $tieneDevolucion ? 'bg-green-700' : 'bg-slate-200 dark:bg-slate-700' }}"></div>
                         </div>
-                        <p class="text-[7px] font-black text-slate-400 uppercase tracking-widest leading-none mb-0.5">Reingreso</p>
-                        <p class="text-[10px] font-bold {{ $tieneDevolucion ? 'text-green-800' : 'text-slate-400' }}">
+                        <p class="text-[7px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest leading-none mb-0.5">Reingreso</p>
+                        <p class="text-[10px] font-bold {{ $tieneDevolucion ? 'text-green-800 dark:text-green-400' : 'text-slate-400 dark:text-slate-600' }}">
                             @if($tieneDevolucion)
                                 {{ \Carbon\Carbon::parse($prestamo->fecha_devolucion_real)->timezone('America/Bogota')->format('d/m/y - h:i A') }}
                             @else
@@ -198,23 +203,23 @@
         {{-- Column 3: Context & Meta Compact --}}
         <div class="space-y-4">
             {{-- Propósito --}}
-            <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-4">
-                <h3 class="text-[8px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2 flex items-center gap-2">
+            <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm p-4">
+                <h3 class="text-[8px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-[0.2em] mb-2 flex items-center gap-2">
                     <span class="w-1.5 h-1.5 rounded-full bg-[#39A900]"></span>
                     Propósito
                 </h3>
-                <p class="text-[10px] font-medium text-slate-600 leading-relaxed bg-slate-50 p-2.5 rounded-xl border border-slate-50 italic text-pretty">
+                <p class="text-[10px] font-medium text-slate-600 dark:text-slate-400 leading-relaxed bg-slate-50 dark:bg-slate-800/50 p-2.5 rounded-xl border border-slate-50 dark:border-slate-800 italic text-pretty">
                     {{ $prestamo->proposito ?? 'Sin propósito redactado.' }}
                 </p>
             </div>
 
             {{-- Observaciones --}}
-            <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-4">
-                <h3 class="text-[8px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2 flex items-center gap-2">
+            <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm p-4">
+                <h3 class="text-[8px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-[0.2em] mb-2 flex items-center gap-2">
                     <span class="w-1.5 h-1.5 rounded-full bg-[#39A900]"></span>
                     Observaciones
                 </h3>
-                <div class="text-[10px] font-medium text-slate-500 leading-tight text-pretty">
+                <div class="text-[10px] font-medium text-slate-500 dark:text-slate-400 leading-tight text-pretty">
                     {{ $prestamo->observaciones ?? 'Sin notas adicionales.' }}
                 </div>
             </div>
@@ -239,14 +244,14 @@
 
     {{-- Bottom Action Center Compact --}}
     @if(in_array($prestamo->estado, ['Pendiente', 'Aceptado', 'Activo', 'Por Confirmar']))
-        <div class="bg-white border border-slate-100 rounded-2xl p-3 shadow-md flex items-center justify-between gap-4">
+        <div class="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl p-3 shadow-md flex items-center justify-between gap-4">
             <div class="flex items-center gap-3">
-                <div class="h-8 w-8 rounded-lg bg-green-50 text-[#39A900] flex items-center justify-center shrink-0">
+                <div class="h-8 w-8 rounded-lg bg-green-50 dark:bg-green-900/20 text-[#39A900] flex items-center justify-center shrink-0">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
                 </div>
                 <div>
-                    <p class="text-[8px] font-black text-slate-400 uppercase tracking-widest leading-none mb-0.5">Acciones</p>
-                    <p class="text-[10px] font-black text-slate-900">Gestionar Operación</p>
+                    <p class="text-[8px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest leading-none mb-0.5">Acciones</p>
+                    <p class="text-[10px] font-black text-slate-900 dark:text-slate-300">Gestionar Operación</p>
                 </div>
             </div>
             
@@ -292,7 +297,7 @@
                 @if(in_array($prestamo->estado, ['Pendiente', 'Aceptado', 'Por Confirmar']))
                     <form action="{{ route('admin.prestamos.rechazar', $prestamo) }}" method="POST">
                         @csrf
-                        <button type="submit" class="px-4 py-2 bg-rose-50 text-rose-600 border border-rose-100 rounded-lg text-[9px] font-black uppercase tracking-widest hover:bg-rose-600 hover:text-white transition-all active:scale-95 group">
+                        <button type="submit" class="px-4 py-2 bg-rose-50 dark:bg-rose-900/20 text-rose-600 dark:text-rose-400 border border-rose-100 dark:border-rose-900/30 rounded-lg text-[9px] font-black uppercase tracking-widest hover:bg-rose-600 dark:hover:bg-rose-600 hover:text-white transition-all active:scale-95 group">
                             Rechazar
                         </button>
                     </form>
@@ -303,15 +308,15 @@
 
     {{-- Modal Devolución Compact --}}
     <div id="modalDevolucion" class="fixed inset-0 z-[110] hidden bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
-        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-sm overflow-hidden transform transition-all border border-slate-100">
+        <div class="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl w-full max-w-sm overflow-hidden transform transition-all border border-slate-100 dark:border-slate-800">
             <div class="h-1.5 bg-[#39A900]"></div>
             <div class="p-6">
                 <div class="flex items-center gap-3 mb-5">
-                    <div class="p-2 bg-emerald-50 rounded-xl">
+                    <div class="p-2 bg-emerald-50 dark:bg-emerald-900/20 rounded-xl">
                         <svg class="w-5 h-5 text-[#39A900]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M16 15L12 19M12 19L8 15M12 19V9M5 20H19"/></svg>
                     </div>
                     <div>
-                        <h3 class="text-base font-black text-slate-900 leading-none">Reingreso</h3>
+                        <h3 class="text-base font-black text-slate-900 dark:text-white leading-none">Reingreso</h3>
                         <p id="txtElemento" class="text-[8px] font-black text-[#39A900] uppercase tracking-widest mt-1"></p>
                     </div>
                 </div>
@@ -319,16 +324,16 @@
                 <form id="formFinalizar" method="POST">
                     @csrf
                     <div class="mb-5">
-                        <label class="block text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Observaciones</label>
+                        <label class="block text-[8px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1.5 ml-1">Observaciones</label>
                         <textarea name="observaciones" rows="3" 
-                                class="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl text-xs font-medium text-slate-900 focus:border-[#39A900] transition-all outline-none placeholder:text-slate-300 resize-none" 
+                                class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-xl text-xs font-medium text-slate-900 dark:text-white focus:border-[#39A900] transition-all outline-none placeholder:text-slate-300 dark:placeholder:text-slate-600 resize-none" 
                                 placeholder="Estado de recibo..."></textarea>
                     </div>
                     <div class="flex flex-col gap-1.5">
-                        <button type="submit" class="w-full py-3 bg-[#39A900] text-white rounded-xl font-black uppercase tracking-widest text-[9px] hover:bg-green-700 shadow-lg shadow-green-100 transition-all active:scale-95">
+                        <button type="submit" class="w-full py-3 bg-[#39A900] text-white rounded-xl font-black uppercase tracking-widest text-[9px] hover:bg-green-700 shadow-lg shadow-green-100 transition-all active:scale-95 border border-transparent dark:border-slate-700">
                             Cerrar Préstamo
                         </button>
-                        <button type="button" onclick="cerrarModal()" class="w-full py-2.5 text-slate-400 font-black text-[9px] uppercase tracking-widest hover:text-slate-600">
+                        <button type="button" onclick="cerrarModal()" class="w-full py-2.5 text-slate-400 dark:text-slate-500 font-black text-[9px] uppercase tracking-widest hover:text-slate-600 dark:hover:text-slate-300">
                             Cancelar
                         </button>
                     </div>

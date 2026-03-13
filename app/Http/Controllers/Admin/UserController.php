@@ -32,11 +32,10 @@ class UserController extends Controller
         $request->validate([
             'name'      => 'required|string|max:255',
             'email'     => 'required|email|unique:users,email,' . $user->id,
-            'documento' => 'required|string|unique:users,documento,' . $user->id,
-            'telefono'  => 'nullable|string|max:20',
+            'documento' => 'required|numeric|unique:users,documento,' . $user->id,
         ]);
 
-        $user->update($request->only(['name', 'email', 'documento', 'telefono']));
+        $user->update($request->only(['name', 'email', 'documento']));
 
         return redirect()->route('admin.usuarios.index')
             ->with('success', 'Información del aprendiz actualizada correctamente.');
