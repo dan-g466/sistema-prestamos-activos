@@ -5,7 +5,7 @@
     <title>Inventario - SENA</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: Helvetica, Arial, sans-serif;
             font-size: 9px;
             color: #1e293b;
             margin: 20px;
@@ -32,9 +32,10 @@
         .stat-lbl  { font-size: 7px; color: #94a3b8; text-transform: uppercase; display: block; }
 
         /* Table */
-        .data-table { width: 100%; border-collapse: collapse; }
+        .data-table { width: 100%; border-spacing: 0; }
         .data-table thead tr { background-color: #00324D; color: #ffffff; }
-        .data-table thead th { padding: 6px 8px; text-align: left; font-size: 8px; text-transform: uppercase; }
+        .data-table thead th { padding: 6px 8px; text-align: left; font-size: 8px; text-transform: uppercase; border-bottom: 2px solid #0f172a; }
+        .data-table tbody tr { page-break-inside: avoid; }
         .data-table tbody tr.even { background-color: #f8fafc; }
         .data-table tbody tr.odd  { background-color: #ffffff; }
         .data-table tbody td { padding: 5px 8px; border-bottom: 1px solid #f1f5f9; }

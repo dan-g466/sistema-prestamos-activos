@@ -93,7 +93,7 @@ class PrestamoController extends Controller
             }
 
             // 3. Crear el préstamo
-            Prestamo::create([
+            $prestamo = Prestamo::create([
                 'user_id' => $user->id,
                 'elemento_id' => $elemento->id,
                 'fecha_solicitud' => now(),
@@ -105,6 +105,13 @@ class PrestamoController extends Controller
 
             // 4. Marcar equipo como prestado inmediatamente
             $elemento->update(['estado' => 'Prestado']);
+
+            // 5. Notificar a los administradores
+            $admins = \App\Models\User::role('Lider Admin')->get();
+            $mensajeAdmin = "Nueva solicitud de préstamo del aprendiz {$user->name} para el equipo '{$elemento->nombre}'. Ingresa a préstamos para revisarla.";
+            foreach($admins as $admin) {
+                $admin->notify(new \App\Notifications\PrestamoStatusUpdated($prestamo, $mensajeAdmin));
+            }
 
             return redirect()->route('user.prestamos.index')->with('success', '¡Solicitud enviada con éxito! Puedes ver el estado de tu trámite aquí.');
         });

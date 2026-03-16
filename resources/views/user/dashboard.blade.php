@@ -1,9 +1,9 @@
 <x-user-layout>
     <div class="h-[calc(100vh-120px)] flex flex-col overflow-hidden">
         {{-- Banner de Bienvenida Estilo Vidrio (Glassmorphism Pro) --}}
-        <div class="relative shrink-0 overflow-hidden bg-gradient-to-br from-[#39A900] via-[#39A900] to-[#39A900] rounded-[3rem] p-6 md:p-10 mb-8 shadow-[0_25px_80px_-20px_rgba(57,169,0,0.3)] animate-in fade-in slide-in-from-top-10 duration-1000 group">
+        <div class="relative shrink-0 overflow-hidden bg-gradient-to-br from-[#39A900] via-[#39A900] to-[#39A900] dark:from-slate-900 dark:via-emerald-900/40 dark:to-slate-900 dark:border dark:border-slate-800 rounded-[3rem] p-6 md:p-10 mb-8 shadow-[0_25px_80px_-20px_rgba(57,169,0,0.3)] dark:shadow-none animate-in fade-in slide-in-from-top-10 duration-1000 group">
             {{-- Elementos Orgánicos de Fondo --}}
-            <div class="absolute -right-20 -top-20 w-[30rem] h-[30rem] bg-[#39A900]/10 rounded-full blur-[100px] mix-blend-screen animate-pulse"></div>
+            <div class="absolute -right-20 -top-20 w-[30rem] h-[30rem] bg-[#39A900]/10 dark:bg-[#39A900]/5 rounded-full blur-[100px] mix-blend-screen animate-pulse"></div>
             
             <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
                 <div class="flex-1 text-center md:text-left">
@@ -19,17 +19,17 @@
                         </span>
                     </div>
                     
-                    <h1 class="text-3xl md:text-5xl font-black text-white tracking-tighter leading-[0.9] mb-4">
-                        ¡Hola, <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#ffffff] to-[#ffffff]">{{ explode(' ', Auth::user()->name)[0] }}</span>!
+                    <h1 class="text-3xl md:text-5xl font-black text-white dark:text-slate-100 tracking-tighter leading-[0.9] mb-4">
+                        ¡Hola, <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#ffffff] to-[#ffffff] dark:from-emerald-400 dark:to-emerald-200">{{ explode(' ', Auth::user()->name)[0] }}</span>!
                     </h1>
                     
-                    <p class="text-white font-medium text-sm leading-relaxed max-w-xl mb-6 italic">
+                    <p class="text-white dark:text-slate-300 font-medium text-sm leading-relaxed max-w-xl mb-6 italic">
                         Gestiona tus recursos formativos con precisión. Todo lo que necesitas en una sola vista.
                     </p>
                     
                     <div class="flex flex-wrap items-center justify-center md:justify-start gap-5">
-                        <a href="{{ route('user.catalogo') }}" class="group relative px-6 py-3 bg-[#39A900] text-white rounded-xl font-black text-[10px] uppercase tracking-[0.2em] shadow-[0_15px_40px_-10px_rgba(57,169,0,0.5)] hover:shadow-[#39A900]/60 transition-all hover:-translate-y-1 active:scale-95 overflow-hidden">
-                            <div class="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+                        <a href="{{ route('user.catalogo') }}" class="group relative px-6 py-3 bg-[#39A900] dark:bg-emerald-600 text-white rounded-xl font-black text-[10px] uppercase tracking-[0.2em] shadow-[0_15px_40px_-10px_rgba(57,169,0,0.5)] dark:shadow-none hover:shadow-[#39A900]/60 dark:hover:bg-emerald-500 transition-all hover:-translate-y-1 active:scale-95 overflow-hidden border border-transparent dark:border-emerald-500/50">
+                            <div class="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 dark:via-white/10 to-white/0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
                             <span class="relative flex items-center gap-3">
                                 <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
                                 Nuevo Préstamo
@@ -51,13 +51,13 @@
 
                 {{-- Card de Usuario Compacta --}}
                 <div class="relative group/user shrink-0">
-                    <div class="relative bg-white/5 dark:bg-black/20 backdrop-blur-3xl border border-white/10 rounded-[2.5rem] p-6 flex flex-col items-center gap-4 shadow-2xl transition-transform group-hover/user:-translate-y-1">
-                        <div class="w-16 h-16 bg-gradient-to-br from-white to-slate-200 dark:from-slate-700 dark:to-slate-900 rounded-2xl shadow-2xl flex items-center justify-center text-2xl font-black text-[#00324D] dark:text-white">
+                    <div class="relative bg-white/5 dark:bg-black/20 backdrop-blur-3xl border border-white/10 dark:border-white/5 rounded-[2.5rem] p-6 flex flex-col items-center gap-4 shadow-2xl transition-transform group-hover/user:-translate-y-1">
+                        <div class="w-16 h-16 bg-gradient-to-br from-white to-slate-200 dark:from-slate-800 dark:to-slate-900 rounded-2xl shadow-2xl dark:shadow-none dark:border dark:border-slate-700 flex items-center justify-center text-2xl font-black text-[#00324D] dark:text-emerald-400">
                             {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
                         </div>
                         <div class="text-center">
                             <h4 class="text-sm font-black text-white tracking-tight leading-tight">{{ Auth::user()->name }}</h4>
-                            <span class="text-[8px] font-black text-[#ffffff] uppercase tracking-[0.3em]">Gestión {{ date('Y') }}</span>
+                            <span class="text-[8px] font-black text-[#ffffff] dark:text-emerald-400 uppercase tracking-[0.3em]">Gestión {{ date('Y') }}</span>
                         </div>
                     </div>
                 </div>
@@ -71,23 +71,23 @@
             <div class="lg:col-span-12 xl:col-span-8 flex flex-col min-h-0">
                 <div class="flex items-center justify-between mb-6 shrink-0">
                     <div class="flex items-center gap-4">
-                        <div class="w-10 h-10 bg-white dark:bg-slate-800 rounded-2xl shadow-lg flex items-center justify-center text-[#39A900] border border-slate-50 dark:border-slate-700">
-                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                        <div class="w-12 h-12 bg-white dark:bg-slate-800 rounded-2xl shadow-xl shadow-slate-200/50 dark:shadow-none flex items-center justify-center text-[#39A900] border border-slate-100/50 dark:border-slate-700">
+                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
                         </div>
-                        <h3 class="text-xl font-black text-[#00324D] dark:text-white tracking-tighter uppercase">Equipos en uso</h3>
+                        <h3 class="text-2xl font-black text-[#00324D] dark:text-white tracking-tighter uppercase">Equipos en uso</h3>
                     </div>
-                    <a href="{{ route('user.prestamos.activos') }}" class="px-4 py-1.5 bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-full text-[9px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest hover:text-[#39A900] transition-all">Ver Más</a>
+                    <a href="{{ route('user.prestamos.activos') }}" class="px-5 py-2 bg-white dark:bg-slate-800 border border-slate-200/60 dark:border-slate-700 rounded-full text-[10px] font-black text-slate-500 dark:text-slate-500 uppercase tracking-widest hover:text-[#39A900] hover:shadow-md transition-all">Ver Más</a>
                 </div>
 
                 <div class="flex-1 overflow-y-auto custom-scrollbar pr-2 space-y-4">
                     @forelse($prestamosActivos as $p)
-                        <div class="group relative bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 p-4 rounded-3xl shadow-xl shadow-slate-200/30 dark:shadow-none hover:shadow-2xl transition-all duration-500 overflow-hidden flex flex-col md:flex-row md:items-center justify-between gap-4">
+                        <div class="group relative bg-white dark:bg-slate-900 border border-slate-100/60 dark:border-slate-800 p-5 rounded-[2rem] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.05)] dark:shadow-none hover:shadow-[0_20px_40px_-10px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition-all duration-500 overflow-hidden flex flex-col md:flex-row md:items-center justify-between gap-4 dark:hover:border-slate-700">
                              <div class="flex items-center gap-4 relative z-10">
-                                <div class="w-12 h-12 bg-slate-50 dark:bg-slate-800 rounded-xl flex items-center justify-center text-[#39A900] shadow-inner group-hover:scale-105 transition-transform duration-500">
+                                <div class="w-12 h-12 bg-slate-50 dark:bg-slate-800/80 rounded-xl flex items-center justify-center text-[#39A900] dark:text-emerald-400 shadow-inner dark:shadow-none group-hover:scale-105 transition-transform duration-500">
                                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
                                 </div>
                                 <div>
-                                    <h4 class="text-sm font-black text-[#00324D] dark:text-white group-hover:text-[#39A900] transition-colors tracking-tight">{{ $p->elemento->nombre }}</h4>
+                                    <h4 class="text-sm font-black text-[#00324D] dark:text-white group-hover:text-[#39A900] dark:group-hover:text-emerald-400 transition-colors tracking-tight">{{ $p->elemento->nombre }}</h4>
                                     <div class="flex items-center gap-2">
                                         <span class="text-[8px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest leading-none">Placa:</span>
                                         <span class="text-[9px] font-mono font-bold text-slate-600 dark:text-slate-300 bg-slate-50 dark:bg-slate-800 px-2 py-0.5 rounded border border-slate-100 dark:border-slate-700">{{ $p->elemento->codigo_sena }}</span>
@@ -99,11 +99,11 @@
                                 <div class="hidden md:flex flex-col items-end">
                                     <span class="text-[8px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-0.5">Entrega:</span>
                                     <div class="flex items-center gap-1.5">
-                                        <span class="text-[11px] font-black text-rose-500">{{ $p->fecha_devolucion_esperada ? $p->fecha_devolucion_esperada->format('d/m') : '—' }}</span>
+                                        <span class="text-[11px] font-black text-rose-500 dark:text-rose-400">{{ $p->fecha_devolucion_esperada ? $p->fecha_devolucion_esperada->format('d/m') : '—' }}</span>
                                         <span class="px-1.5 py-0.5 bg-rose-50 dark:bg-rose-900/20 text-rose-600 dark:text-rose-400 rounded text-[8px] font-black uppercase">{{ $p->fecha_devolucion_esperada ? $p->fecha_devolucion_esperada->format('h:i A') : '' }}</span>
                                     </div>
                                 </div>
-                                <a href="{{ route('user.prestamos.show', $p) }}" class="flex items-center gap-2 px-4 py-2.5 bg-[#00324D] text-white rounded-xl text-[8px] font-black uppercase tracking-widest hover:bg-[#39A900] transition-all shrink-0">
+                                <a href="{{ route('user.prestamos.show', $p) }}" class="flex items-center gap-2 px-4 py-2.5 bg-[#00324D] dark:bg-slate-800 text-white dark:text-white rounded-xl text-[8px] font-black uppercase tracking-widest hover:bg-[#39A900] dark:hover:bg-slate-700 transition-all shrink-0 dark:border dark:border-slate-700">
                                     Seguimiento
                                 </a>
                             </div>
@@ -118,15 +118,15 @@
 
             {{-- Columna Lateral: SOLICITUDES --}}
             <div class="lg:col-span-12 xl:col-span-4 flex flex-col min-h-0">
-                <div class="flex items-center justify-between mb-6 shrink-0">
+                <div class="flex items-center justify-between mb-6 shrink-0 h-12">
                     <h3 class="text-xl font-black text-[#00324D] dark:text-white tracking-tighter uppercase">Pendientes</h3>
-                    <a href="{{ route('user.prestamos.index') }}" class="text-[9px] font-black text-amber-500 uppercase tracking-widest hover:underline">Gestionar</a>
+                    <a href="{{ route('user.prestamos.index') }}" class="text-[9px] font-black text-amber-500 uppercase tracking-widest hover:text-amber-600 transition-colors">Gestionar</a>
                 </div>
 
-                <div class="flex-1 overflow-y-auto custom-scrollbar pr-2 space-y-3">
+                <div class="flex-1 overflow-y-auto custom-scrollbar pr-2 space-y-4">
                     @forelse($solicitudes as $s)
-                        <div class="group bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 p-4 rounded-3xl shadow-xl shadow-slate-200/10 dark:shadow-none hover:shadow-2xl transition-all duration-500 relative flex items-center gap-4">
-                            <div class="w-10 h-10 bg-amber-50 dark:bg-amber-900/10 rounded-xl flex items-center justify-center text-amber-500 dark:text-amber-400 shrink-0 shadow-inner group-hover:rotate-6 transition-transform">
+                        <div class="group bg-white dark:bg-slate-900 border border-slate-100/60 dark:border-slate-800 p-4 rounded-[2rem] shadow-[0_10px_30px_-15px_rgba(0,0,0,0.06)] dark:shadow-none hover:shadow-[0_15px_30px_-10px_rgba(0,0,0,0.1)] hover:-translate-y-0.5 transition-all duration-500 relative flex items-center gap-4">
+                            <div class="w-12 h-12 bg-amber-50 dark:bg-amber-900/10 rounded-2xl flex items-center justify-center text-amber-500 dark:text-amber-400 shrink-0 shadow-inner group-hover:rotate-12 transition-transform duration-500">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                             </div>
                             <div class="flex-1 min-w-0">
@@ -149,12 +149,12 @@
 
                 {{-- Alert Sanción --}}
                 @if(Auth::user()->sancionado)
-                    <div class="mt-6 shrink-0 bg-gradient-to-br from-rose-500 to-rose-700 rounded-[2.5rem] p-6 text-white shadow-2xl relative overflow-hidden">
-                        <h5 class="text-[10px] font-black uppercase tracking-widest mb-1 flex items-center gap-2">
+                    <div class="mt-6 shrink-0 bg-gradient-to-br from-rose-500 to-rose-700 dark:from-rose-900/40 dark:to-rose-900/20 dark:border dark:border-rose-800/50 rounded-[2.5rem] p-6 text-white shadow-2xl dark:shadow-none relative overflow-hidden">
+                        <h5 class="text-[10px] font-black uppercase tracking-widest mb-1 flex items-center gap-2 dark:text-white">
                              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                              Sanción Activa
                         </h5>
-                        <a href="{{ route('user.sanciones.index') }}" class="block w-full py-3 mt-3 bg-white text-rose-600 rounded-xl text-[8px] font-black uppercase tracking-widest text-center shadow-xl">Ver Expediente</a>
+                        <a href="{{ route('user.sanciones.index') }}" class="block w-full py-3 mt-3 bg-white dark:bg-rose-800/40 text-rose-600 dark:text-rose-300 rounded-xl text-[8px] font-black uppercase tracking-widest text-center shadow-xl dark:shadow-none dark:hover:bg-rose-800/60 transition-colors">Ver Expediente</a>
                     </div>
                 @endif
             </div>

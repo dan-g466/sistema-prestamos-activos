@@ -46,6 +46,11 @@
         .swal2-html-container ul { list-style: none; padding: 0; margin: 10px 0; }
         .swal2-html-container li { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; text-align: left; }
         .swal2-html-container li i { color: #f43f5e; margin-top: 3px; font-size: 0.9em; }
+
+        /* Dark Mode Sweet Alert */
+        html.dark .swal2-popup { background-color: #0f172a !important; border: 1px solid #1e293b !important; }
+        html.dark .swal2-title { color: #f8fafc !important; }
+        html.dark .swal2-html-container { color: #94a3b8 !important; }
     </style>
 
     <style>
@@ -59,7 +64,7 @@
 
         body {
             /* Verde SENA más claro para dejar ver la imagen de fondo */
-            background-image: linear-gradient(135deg, rgba(57, 169, 0, 0.7), rgba(44, 130, 0, 0.75)), url('/img/login.png');
+            background-image: linear-gradient(135deg, rgba(57, 169, 0, 0.8), rgba(44, 130, 0, 0.9)), url('/img/login.png');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -68,6 +73,11 @@
             justify-content: center;
             align-items: center;
             padding: 20px;
+            transition: background 0.5s ease;
+        }
+
+        html.dark body {
+            background-image: linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(2, 6, 23, 0.95)), url('/img/login.png');
         }
 
         .login-wrapper {
@@ -177,6 +187,32 @@
             box-shadow: 0 0 0 4px rgba(57, 169, 0, 0.1);
         }
 
+        /* Input Dark Mode */
+        html.dark .input-group input {
+            background-color: #0f172a;
+            border-color: #1e293b;
+            color: #f1f5f9;
+        }
+
+        html.dark .input-group input:focus {
+            background-color: #1e293b;
+            border-color: #39A900;
+            box-shadow: 0 0 0 4px rgba(57, 169, 0, 0.2);
+        }
+
+        html.dark .input-group input::placeholder {
+            color: #64748b;
+        }
+
+        html.dark .icon-left, html.dark .icon-right {
+            color: #475569;
+        }
+        
+        html.dark .input-group:focus-within .icon-left,
+        html.dark .icon-right:hover {
+            color: #39A900;
+        }
+
         .btn-ingresar {
             width: 100%;
             padding: 16px;
@@ -226,6 +262,18 @@
         .enlaces-ayuda a:hover {
             color: #39A900;
             padding-left: 5px;
+        }
+
+        html.dark .enlaces-ayuda {
+            border-top-color: #1e293b;
+        }
+
+        html.dark .enlaces-ayuda a {
+            color: #94a3b8;
+        }
+
+        html.dark .enlaces-ayuda a:hover {
+            color: #39A900;
         }
 
         /* Estilos para errores de validación de Laravel */

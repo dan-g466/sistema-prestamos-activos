@@ -79,8 +79,40 @@
                     </h3>
                     <p class="text-white/90 text-[10px] font-black uppercase tracking-[0.25em] mb-10 relative z-10 leading-tight">Documentación <span class="text-white">Oficial Administrativa</span></p>
                     
-                    <div class="space-y-4 relative z-10">
-                        <a href="{{ route('admin.reportes.pdf', ['tipo' => 'inventario']) }}" class="flex items-center justify-between p-5 bg-white/10 border border-white/10 rounded-2xl hover:bg-white hover:text-[#39A900] transition-all duration-500 group/link shadow-lg group-hover:shadow-[#39A900]/30">
+                    <div class="space-y-4 relative z-10" x-data="{
+                        downloadReport(url) {
+                            if (typeof Swal !== 'undefined') {
+                                Swal.fire({
+                                    title: 'Generando Reporte...',
+                                    html: 'Este proceso tomará algunos segundos debido a la <b>gran cantidad de datos</b> cargados en el sistema.<br><br>Por favor, no cierres esta ventana.',
+                                    icon: 'info',
+                                    showConfirmButton: false,
+                                    allowOutsideClick: false,
+                                    didOpen: () => {
+                                        Swal.showLoading();
+                                    }
+                                });
+                            }
+                            
+                            // Redirect to trigger download
+                            window.location.href = url;
+                            
+                            // Cierra la alerta de carga y muestra la de éxito después del timeout
+                            setTimeout(() => {
+                                if (typeof Swal !== 'undefined') {
+                                    Swal.fire({
+                                        title: '¡Descarga Iniciada!',
+                                        text: 'El reporte de tu inventario se ha procesado y empezó a descargarse correctamente.',
+                                        icon: 'success',
+                                        confirmButtonText: 'Entendido',
+                                        confirmButtonColor: '#39A900',
+                                        timer: 4000
+                                    });
+                                }
+                            }, 5000);
+                        }
+                    }">
+                        <a href="javascript:void(0)" @click="downloadReport('{{ route('admin.reportes.pdf', ['tipo' => 'inventario']) }}')" class="flex items-center justify-between p-5 bg-white/10 border border-white/10 rounded-2xl hover:bg-white hover:text-[#39A900] transition-all duration-500 group/link shadow-lg group-hover:shadow-[#39A900]/30">
                             <div class="flex items-center gap-3">
                                 <div class="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center group-hover/link:bg-[#39A900]/10 transition-colors duration-500">
                                     <svg class="w-5 h-5 text-white group-hover/link:text-[#39A900]" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A1 1 0 0111 2.414l3.586 3.586a1 1 0 01.414.707V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd"/></svg>
@@ -89,7 +121,7 @@
                             </div>
                             <svg class="w-4 h-4 opacity-40 group-hover/link:opacity-100 group-hover/link:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M14 5l7 7-7 7"/></svg>
                         </a>
-                        <a href="{{ route('admin.reportes.pdf', ['tipo' => 'prestamos_mes']) }}" class="flex items-center justify-between p-5 bg-white/10 border border-white/10 rounded-2xl hover:bg-white hover:text-[#39A900] transition-all duration-500 group/link shadow-lg group-hover:shadow-[#39A900]/30">
+                        <a href="javascript:void(0)" @click="downloadReport('{{ route('admin.reportes.pdf', ['tipo' => 'prestamos_mes']) }}')" class="flex items-center justify-between p-5 bg-white/10 border border-white/10 rounded-2xl hover:bg-white hover:text-[#39A900] transition-all duration-500 group/link shadow-lg group-hover:shadow-[#39A900]/30">
                             <div class="flex items-center gap-3">
                                 <div class="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center group-hover/link:bg-[#39A900]/10 transition-colors duration-500">
                                     <svg class="w-5 h-5 text-white group-hover/link:text-[#39A900]" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/></svg>

@@ -75,7 +75,7 @@
                         </table>
                     </div>
 
-                    <div class="mt-4">
+                    <div class="mt-6 border-t border-slate-100 dark:border-slate-800/60 pt-6">
                         {{ $movimientos->links() }}
                     </div>
                 </div>

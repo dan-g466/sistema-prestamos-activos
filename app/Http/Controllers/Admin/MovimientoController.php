@@ -33,7 +33,7 @@ class MovimientoController extends Controller
             });
         }
 
-        $movimientos = $query->orderBy('created_at', 'desc')->paginate(20);
+        $movimientos = $query->orderBy('created_at', 'desc')->paginate(10);
 
         return view('admin.movimientos.index', compact('movimientos'));
     }

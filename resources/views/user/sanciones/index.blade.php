@@ -1,61 +1,79 @@
 <x-user-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Estado de mi Cuenta y Sanciones') }}
-        </h2>
-    </x-slot>
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-in fade-in slide-in-from-top-4 duration-700">
+        
+        {{-- Cabecera de Sección --}}
+        <div class="mb-8 flex flex-col items-center text-center">
+            <h2 class="text-3xl font-black text-[#00324D] dark:text-white tracking-tighter uppercase mb-2">
+                Estado de mi <span class="text-[#39A900] dark:text-emerald-400">Cuenta</span>
+            </h2>
+            <p class="text-slate-500 dark:text-slate-400 text-xs max-w-lg font-medium">Revisa el historial de tus sanciones y verifica si tienes permisos para realizar nuevas solicitudes en el catálogo.</p>
+        </div>
 
-    <div class="py-12">
-        <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-3xl p-8 border-t-8 {{ Auth::user()->sancionado ? 'border-red-600' : 'border-green-500' }}">
+        <div class="bg-white dark:bg-slate-900 overflow-hidden shadow-2xl shadow-slate-200/50 dark:shadow-none sm:rounded-[2.5rem] p-8 border-t-[12px] border dark:border-slate-800 {{ Auth::user()->sancionado ? 'border-t-rose-500 dark:border-t-rose-600' : 'border-t-[#39A900] dark:border-t-emerald-500' }} transition-all duration-300">
+            
+            <div class="text-center mb-10 pb-8 border-b border-slate-100 dark:border-slate-800">
+                <h3 class="text-xl font-black text-slate-800 dark:text-slate-200 uppercase tracking-widest mb-6">Estado Actual</h3>
+                @if(Auth::user()->sancionado)
+                    <div class="inline-flex flex-col items-center">
+                        <span class="px-6 py-2.5 bg-rose-50 dark:bg-rose-900/20 text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-900/30 rounded-2xl font-black text-sm uppercase tracking-widest flex items-center gap-2 shadow-inner">
+                            <span class="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span>
+                            Solicitudes Bloqueadas
+                        </span>
+                        <p class="mt-4 text-xs text-rose-500 dark:text-rose-400 font-bold max-w-sm">No puedes apartar elementos en el catálogo hasta que expire tu sanción activa.</p>
+                    </div>
+                @else
+                    <div class="inline-flex flex-col items-center">
+                        <span class="px-6 py-2.5 bg-[#39A900]/10 dark:bg-emerald-900/20 text-[#39A900] dark:text-emerald-400 border border-[#39A900]/20 dark:border-emerald-900/30 rounded-2xl font-black text-sm uppercase tracking-widest flex items-center gap-2 shadow-inner">
+                            <span class="w-2 h-2 rounded-full bg-[#39A900] dark:bg-emerald-500 animate-pulse"></span>
+                            Usuario al Día
+                        </span>
+                        <p class="mt-4 text-xs text-slate-500 dark:text-slate-400 font-medium max-w-sm">Tu cuenta está habilitada para solicitar equipos en el Sistema de Préstamos SENA.</p>
+                    </div>
+                @endif
+            </div>
+
+            <div class="space-y-6">
+                <h4 class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-[0.2em] mb-4 flex items-center gap-3">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                    Registro de Sanciones
+                </h4>
                 
-                <div class="text-center mb-10">
-                    <h3 class="text-2xl font-black text-gray-800 uppercase italic">Estado Actual</h3>
-                    @if(Auth::user()->sancionado)
-                        <div class="mt-4">
-                            <span class="px-6 py-2 bg-red-600 text-white rounded-full font-black animate-pulse">SOLICITUDES BLOQUEADAS</span>
-                            <p class="mt-4 text-sm text-red-600 font-bold italic">No puedes realizar solicitudes en el catálogo hasta que expire tu sanción activa.</p>
+                @forelse($sanciones as $s)
+                    <div class="p-6 rounded-3xl transition-all duration-300 hover:shadow-lg {{ $s->fecha_fin >= now() ? 'bg-rose-50/50 dark:bg-rose-900/10 border border-rose-100 dark:border-rose-900/20 hover:shadow-rose-100 dark:hover:shadow-none' : 'bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800' }}">
+                        <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-4 gap-2">
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest border {{ $s->fecha_fin >= now() ? 'text-rose-600 dark:text-rose-400 bg-white dark:bg-rose-900/30 border-rose-200 dark:border-rose-800' : 'text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700' }}">
+                                @if($s->fecha_fin >= now())
+                                    <span class="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse"></span>
+                                @endif
+                                {{ $s->fecha_fin >= now() ? 'Sanción Vigente' : 'Sanción Cumplida' }}
+                            </span>
+                            <span class="text-[10px] font-mono font-bold text-slate-400 dark:text-slate-500 bg-white dark:bg-slate-900 px-2 py-1 rounded-md border border-slate-100 dark:border-slate-800 w-fit">Registrado: {{ $s->created_at->format('d/m/Y') }}</span>
                         </div>
-                    @else
-                        <div class="mt-4">
-                            <span class="px-6 py-2 bg-green-500 text-white rounded-full font-black uppercase tracking-widest text-xs">Usuario al Día</span>
-                            <p class="mt-4 text-sm text-gray-500 italic">Tu cuenta está habilitada para solicitar equipos en el Sistema de Préstamos SENA.</p>
-                        </div>
-                    @endif
-                </div>
-
-                <div class="space-y-6">
-                    <h4 class="text-xs font-black text-gray-400 uppercase tracking-widest border-b pb-2">Registro de Sanciones</h4>
-                    
-                    @forelse($sanciones as $s)
-                        <div class="p-6 rounded-2xl {{ $s->fecha_fin >= now() ? 'bg-red-50 border border-red-100' : 'bg-gray-50 border border-gray-100' }}">
-                            <div class="flex justify-between items-start mb-4">
-                                <span class="text-[10px] font-black uppercase {{ $s->fecha_fin >= now() ? 'text-red-600' : 'text-gray-400' }}">
-                                    {{ $s->fecha_fin >= now() ? 'Sanción Vigente' : 'Sanción Cumplida' }}
-                                </span>
-                                <span class="text-xs font-mono text-gray-500 italic">{{ $s->created_at->format('d/m/Y') }}</span>
+                        <p class="text-slate-700 dark:text-slate-300 text-sm leading-relaxed mb-6 bg-white dark:bg-slate-900/50 p-4 rounded-2xl border border-slate-100 dark:border-slate-800/50 font-medium">
+                            <strong class="text-[#00324D] dark:text-slate-100 font-black block text-xs uppercase tracking-widest mb-1">Motivo:</strong> 
+                            "{{ $s->motivo }}"
+                        </p>
+                        <div class="flex justify-between items-end border-t border-slate-200 dark:border-slate-700/50 pt-4">
+                            <div class="flex flex-col">
+                                <span class="text-[9px] text-slate-400 dark:text-slate-500 font-black uppercase tracking-widest mb-0.5">Inició:</span>
+                                <span class="text-xs font-bold text-slate-600 dark:text-slate-400">{{ $s->fecha_inicio->format('d/m/Y') }}</span>
                             </div>
-                            <p class="text-gray-700 text-sm leading-relaxed mb-4">
-                                <strong>Motivo registrado:</strong> {{ $s->motivo }}
-                            </p>
-                            <div class="flex justify-between items-end border-t border-gray-200 pt-4">
-                                <div class="text-xs text-gray-400">
-                                    Inició: {{ $s->fecha_inicio->format('d/m/Y') }}
-                                </div>
-                                <div class="text-right">
-                                    <p class="text-[10px] text-gray-400 font-bold uppercase">Finaliza el:</p>
-                                    <p class="text-sm font-black {{ $s->fecha_fin >= now() ? 'text-red-600' : 'text-gray-600' }}">{{ $s->fecha_fin->format('d/m/Y') }}</p>
-                                </div>
+                            <div class="text-right flex flex-col">
+                                <span class="text-[9px] text-slate-400 dark:text-slate-500 font-black uppercase tracking-widest mb-0.5">Finaliza el:</span>
+                                <span class="text-sm font-black {{ $s->fecha_fin >= now() ? 'text-rose-600 dark:text-rose-400' : 'text-[#39A900] dark:text-emerald-500' }}">{{ $s->fecha_fin->format('d/m/Y') }}</span>
                             </div>
                         </div>
-                    @empty
-                        <div class="text-center py-10">
-                            <svg class="w-16 h-16 text-green-200 mx-auto mb-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
-                            <p class="text-gray-400 italic">No tienes antecedentes disciplinarios. ¡Sigue así!</p>
+                    </div>
+                @empty
+                    <div class="text-center py-12 bg-slate-50 dark:bg-slate-800/30 rounded-3xl border border-slate-100 dark:border-slate-800 border-dashed">
+                        <div class="w-16 h-16 bg-[#39A900]/10 dark:bg-emerald-900/30 text-[#39A900] dark:text-emerald-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                         </div>
-                    @endforelse
-                </div>
+                        <p class="text-[#00324D] dark:text-white font-black text-lg mb-1">Registro Limpio</p>
+                        <p class="text-slate-400 dark:text-slate-500 text-xs font-medium">No tienes antecedentes disciplinarios. ¡Sigue así!</p>
+                    </div>
+                @endforelse
             </div>
         </div>
     </div>
-</x-app-layout>
+</x-user-layout>

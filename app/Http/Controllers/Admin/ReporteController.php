@@ -68,8 +68,9 @@ class ReporteController extends Controller
      */
     public function pdf(Request $request)
     {
-        ini_set('memory_limit', '512M');
-        ini_set('max_execution_time', '120');
+        ini_set('memory_limit', '1024M');
+        ini_set('max_execution_time', '300');
+        ini_set('pcre.backtrack_limit', '10000000');
 
         $tipo = $request->query('tipo', 'inventario');
 

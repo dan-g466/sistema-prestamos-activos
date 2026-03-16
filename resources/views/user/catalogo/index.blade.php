@@ -11,11 +11,11 @@
     }">
 
         {{-- ─── Hero / Search Bar ─── --}}
-        <div class="bg-[#39A900] dark:bg-[#39A900]/90 py-10 px-4 rounded-3xl mb-8 shadow-lg shadow-green-900/20">
+        <div class="bg-[#39A900] dark:bg-emerald-900/40 py-10 px-4 rounded-3xl mb-8 shadow-lg shadow-green-900/20 dark:shadow-none dark:border dark:border-emerald-800/50">
             <div class="max-w-5xl mx-auto text-center">
-                <p class="text-[10px] font-black text-white/50 uppercase tracking-[0.3em] mb-1">Centro de Gestión</p>
+                <p class="text-[10px] font-black text-white/50 dark:text-emerald-400/60 uppercase tracking-[0.3em] mb-1">Centro de Gestión</p>
                 <h1 class="text-2xl md:text-3xl font-black text-white mb-6 tracking-tight">
-                    Catálogo de <span class="text-[#ffffff]">Elementos</span>
+                    Catálogo de <span class="text-[#ffffff] dark:text-emerald-200">Elementos</span>
                 </h1>
 
                 {{-- Barra de búsqueda --}}
@@ -29,9 +29,9 @@
                                name="search"
                                value="{{ request('search') }}"
                                placeholder="Buscar por nombre o código SENA…"
-                               class="w-full pl-12 pr-32 py-3.5 rounded-2xl text-sm font-medium text-slate-700 dark:text-white bg-white dark:bg-slate-800 shadow-xl border-0 focus:ring-2 focus:ring-[#39A900] outline-none transition placeholder:text-slate-400 dark:placeholder:text-slate-500">
+                               class="w-full pl-12 pr-32 py-3.5 rounded-2xl text-sm font-medium text-slate-700 dark:text-white bg-white dark:bg-slate-800 shadow-xl dark:shadow-none dark:border dark:border-slate-700 focus:ring-2 focus:ring-[#39A900] dark:focus:ring-emerald-500 outline-none transition placeholder:text-slate-400 dark:placeholder:text-slate-500">
                         <button type="submit"
-                                class="absolute right-2 top-1/2 -translate-y-1/2 px-5 py-2 bg-[#39A900] hover:bg-green-700 text-white text-xs font-black uppercase tracking-wider rounded-xl transition active:scale-95 shadow-md shadow-green-900/30">
+                                class="absolute right-2 top-1/2 -translate-y-1/2 px-5 py-2 bg-[#39A900] dark:bg-emerald-600 hover:bg-green-700 dark:hover:bg-emerald-500 text-white text-xs font-black uppercase tracking-wider rounded-xl transition active:scale-95 shadow-md shadow-green-900/30 dark:shadow-none">
                             Buscar
                         </button>
                     </div>
@@ -43,26 +43,47 @@
 
             {{-- Flash mensaje --}}
             @if(session('success'))
-                <div class="mb-6 bg-white dark:bg-slate-900 border-l-4 border-[#39A900] dark:border-l-4 dark:border-slate-800 dark:border-l-[#39A900] text-[#00324D] dark:text-white px-5 py-3.5 rounded-xl shadow-sm flex items-center gap-3 text-sm font-bold" x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 5000)">
+                <div class="mb-6 bg-white dark:bg-slate-900 border-l-4 border-[#39A900] text-[#00324D] dark:text-white px-5 py-3.5 rounded-xl shadow-sm flex items-center gap-3 text-sm font-bold" x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 5000)">
                     <svg class="w-5 h-5 text-[#39A900] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                     {{ session('success') }}
                 </div>
             @endif
 
+            @if(session('error') || $errors->any())
+                <div class="mb-6 bg-white dark:bg-slate-900 border-l-4 border-rose-500 text-[#00324D] dark:text-white px-5 py-3.5 rounded-xl shadow-sm flex items-start gap-3 text-sm font-bold" x-data="{ show: true }" x-show="show">
+                    <svg class="w-5 h-5 text-rose-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                    <div>
+                        @if(session('error'))
+                            <p>{{ session('error') }}</p>
+                        @endif
+                        @if($errors->any())
+                            <ul class="list-disc list-inside text-rose-500 font-medium text-xs mt-1">
+                                @foreach($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        @endif
+                    </div>
+                    <button @click="show = false" class="ml-auto text-slate-400 hover:text-slate-600 dark:hover:text-slate-300">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                    </button>
+                </div>
+            @endif
+
             {{-- ─── Filtros por categoría (chips) ─── --}}
             <div class="flex items-center gap-2 flex-wrap mb-6">
-                <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest mr-1">Categoría:</span>
+                <span class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mr-1">Categoría:</span>
 
                 <a href="{{ route('user.catalogo', array_merge(request()->only('search'), ['categoria' => ''])) }}"
                    class="px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-wide transition-all border
-                          {{ !request('categoria') ? 'bg-[#39A900] text-white border-[#39A900] shadow-md' : 'bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-700 hover:border-[#39A900] hover:text-[#39A900]' }}">
+                          {{ !request('categoria') ? 'bg-[#39A900] dark:bg-emerald-600 text-white border-[#39A900] dark:border-emerald-600 shadow-md dark:shadow-none' : 'bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-700 hover:border-[#39A900] dark:hover:border-emerald-500 hover:text-[#39A900] dark:hover:text-emerald-400' }}">
                     Todos
                 </a>
 
                 @foreach($categorias as $cat)
                     <a href="{{ route('user.catalogo', array_merge(request()->only('search'), ['categoria' => $cat->id])) }}"
                        class="px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-wide transition-all border
-                              {{ request('categoria') == $cat->id ? 'bg-[#39A900] text-white border-[#39A900] shadow-md shadow-green-100' : 'bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-700 hover:border-[#39A900] hover:text-[#39A900]' }}">
+                              {{ request('categoria') == $cat->id ? 'bg-[#39A900] dark:bg-emerald-600 text-white border-[#39A900] dark:border-emerald-600 shadow-md shadow-green-100 dark:shadow-none' : 'bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-700 hover:border-[#39A900] dark:hover:border-emerald-500 hover:text-[#39A900] dark:hover:text-emerald-400' }}">
                         {{ $cat->nombre }}
                     </a>
                 @endforeach
@@ -74,7 +95,7 @@
                     <span class="text-[#00324D] dark:text-white font-black text-sm">{{ $elementos->total() }}</span>
                     elemento{{ $elementos->total() !== 1 ? 's' : '' }} disponible{{ $elementos->total() !== 1 ? 's' : '' }}
                     @if(request('search'))
-                        para <span class="text-[#39A900]">"{{ request('search') }}"</span>
+                        para <span class="text-[#39A900] dark:text-emerald-400">"{{ request('search') }}"</span>
                     @endif
                 </p>
                 @if(request('search') || request('categoria'))
@@ -88,9 +109,9 @@
 
             {{-- ─── Grid de cards ─── --}}
             @if($elementos->count() > 0)
-                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5">
                     @foreach ($elementos as $elemento)
-                        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col overflow-hidden group">
+                        <div class="bg-white dark:bg-slate-900 rounded-[1.5rem] border border-slate-100/60 dark:border-slate-800 shadow-[0_8px_30px_-10px_rgba(0,0,0,0.04)] hover:shadow-[0_20px_40px_-10px_rgba(0,0,0,0.08)] hover:-translate-y-1 dark:shadow-none transition-all duration-500 flex flex-col overflow-hidden group">
 
                             {{-- Imagen o placeholder --}}
                             <div class="h-32 bg-slate-50 dark:bg-slate-800/50 flex items-center justify-center border-b border-slate-100 dark:border-slate-800 relative overflow-hidden">
@@ -138,7 +159,7 @@
                                         </div>
                                     @else
                                         <button @click="openModal = true; elementoId = {{ $elemento->id }}; elementoNombre = '{{ $elemento->nombre }}'"
-                                                class="w-full py-2 bg-[#39A900] hover:bg-green-700 text-white text-[10px] font-black uppercase tracking-widest rounded-lg transition-all active:scale-95 shadow-sm shadow-green-100 dark:shadow-none flex items-center justify-center gap-1.5">
+                                                class="w-full py-2 bg-[#39A900] dark:bg-emerald-600 hover:bg-green-700 dark:hover:bg-emerald-500 text-white text-[10px] font-black uppercase tracking-widest rounded-lg transition-all active:scale-95 shadow-sm shadow-green-100 dark:shadow-none flex items-center justify-center gap-1.5 border border-transparent dark:border-emerald-500/50">
                                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
                                             Solicitar
                                         </button>
@@ -158,7 +179,7 @@
                     <p class="font-black text-[#00324D] dark:text-white text-lg mb-1">Sin resultados</p>
                     <p class="text-sm text-slate-400 dark:text-slate-500 mb-5">No hay elementos disponibles con ese criterio de búsqueda.</p>
                     <a href="{{ route('user.catalogo') }}"
-                       class="px-6 py-2.5 bg-[#39A900] text-white text-xs font-black uppercase tracking-widest rounded-xl transition hover:bg-green-700 active:scale-95">
+                       class="px-6 py-2.5 bg-[#39A900] dark:bg-emerald-600 hover:bg-green-700 dark:hover:bg-emerald-500 text-white text-xs font-black uppercase tracking-widest rounded-xl transition active:scale-95 shadow-sm dark:shadow-none">
                         Ver todos
                     </a>
                 </div>
@@ -233,8 +254,11 @@
                                            id="fecha_devolucion_esperada" 
                                            name="fecha_devolucion_esperada" 
                                            required
-                                           class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-xl text-sm font-bold text-[#00324D] dark:text-white focus:ring-4 focus:ring-[#39A900]/10 focus:border-[#39A900] transition-all outline-none">
+                                           class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border {{ $errors->has('fecha_devolucion_esperada') ? 'border-rose-500' : 'border-slate-100 dark:border-slate-700' }} rounded-xl text-sm font-bold text-[#00324D] dark:text-white focus:ring-4 focus:ring-[#39A900]/10 focus:border-[#39A900] transition-all outline-none">
                                     <p class="text-[9px] text-slate-400 dark:text-slate-600 mt-2 ml-1 italic font-medium">Define el rango exacto de tiempo para el préstamo.</p>
+                                    @error('fecha_devolucion_esperada')
+                                        <p class="text-rose-500 text-xs mt-1 font-medium">{{ $message }}</p>
+                                    @enderror
                                 </div>
 
                                 <div>
@@ -255,7 +279,7 @@
                                 </button>
                                 <button type="submit"
                                         :disabled="submitting"
-                                        class="flex-1 px-6 py-3 bg-[#39A900] text-white rounded-xl text-xs font-black uppercase tracking-widest hover:bg-green-700 transition-all active:scale-95 shadow-lg shadow-green-100 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
+                                        class="flex-1 px-6 py-3 bg-[#39A900] dark:bg-emerald-600 text-white rounded-xl text-xs font-black uppercase tracking-widest hover:bg-green-700 dark:hover:bg-emerald-500 transition-all active:scale-95 shadow-lg shadow-green-100 dark:shadow-none border border-transparent dark:border-emerald-500/50 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
                                     <template x-if="!submitting">
                                         <span>Confirmar</span>
                                     </template>
