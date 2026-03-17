@@ -104,11 +104,11 @@
                     Elemento
                 </h3>
                 <div class="flex items-center gap-3 mb-4">
-                    <div class="h-10 w-10 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center overflow-hidden shrink-0 shadow-inner">
+                    <div class="h-10 w-10 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 flex items-center justify-center overflow-hidden shrink-0 shadow-inner">
                         @if($prestamo->elemento->imagen)
                             <img src="{{ asset('storage/' . $prestamo->elemento->imagen) }}" class="w-full h-full object-contain p-1.5">
                         @else
-                            <svg class="w-5 h-5 text-slate-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+                            <svg class="w-5 h-5 text-slate-200 dark:text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
                         @endif
                     </div>
                     <div class="min-w-0">
@@ -227,14 +227,14 @@
             {{-- Auditoría --}}
             <div class="bg-[#39A900] rounded-2xl p-4 text-white shadow-lg overflow-hidden relative">
                 <div class="absolute -right-4 -bottom-4 w-16 h-16 bg-white/5 rounded-full"></div>
-                <h3 class="text-[7px] font-black text-white/40 uppercase tracking-[0.2em] mb-3">Auditoría</h3>
+                <h3 class="text-[7px] font-black text-white/80 uppercase tracking-[0.2em] mb-3">Auditoría</h3>
                 <div class="space-y-2">
                     <div class="flex justify-between items-center text-[9px]">
-                        <span class="font-black text-white/30 uppercase tracking-widest">Creación</span>
+                        <span class="font-black text-white/80 uppercase tracking-widest">Creación</span>
                         <span class="font-bold text-white/80">{{ $prestamo->created_at->format('d/m/y H:i') }}</span>
                     </div>
                     <div class="flex justify-between items-center text-[9px]">
-                        <span class="font-black text-white/30 uppercase tracking-widest">Cambio</span>
+                        <span class="font-black text-white/80 uppercase tracking-widest">Cambio</span>
                         <span class="font-bold text-white/80">{{ $prestamo->updated_at->format('d/m/y H:i') }}</span>
                     </div>
                 </div>

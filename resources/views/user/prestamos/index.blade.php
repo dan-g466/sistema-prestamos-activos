@@ -8,7 +8,7 @@
                     <span class="text-[9px] font-black text-amber-600 dark:text-amber-400 uppercase tracking-widest">En Trámite</span>
                 </div>
                 <h2 class="text-3xl font-black text-[#00324D] dark:text-white tracking-tighter uppercase">Mis Solicitudes</h2>
-                <p class="text-slate-400 dark:text-slate-500 text-xs font-medium mt-1">Sigue el estado de tus solicitudes en trámite y procesos de confirmación de entrega.</p>
+                <p class="text-slate-500 dark:text-slate-500 text-xs font-medium mt-1">Sigue el estado de tus solicitudes en trámite y procesos de confirmación de entrega.</p>
             </div>
             <a href="{{ route('user.catalogo') }}" class="px-6 py-3 bg-[#39A900] text-white text-[10px] font-black uppercase tracking-widest rounded-2xl shadow-xl shadow-[#39A900]/20 hover:shadow-[#39A900]/40 transition-all active:scale-95 flex items-center justify-center gap-2">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" /></svg>
@@ -57,21 +57,21 @@
                                                 @if(optional($p->elemento)->imagen)
                                                     <img src="{{ asset('storage/' . $p->elemento->imagen) }}" class="w-7 h-7 object-contain">
                                                 @else
-                                                    <svg class="w-5 h-5 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+                                                    <svg class="w-5 h-5 text-slate-400 dark:text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
                                                 @endif
                                             </div>
                                             <div>
                                                 <p class="text-[13px] font-black text-[#00324D] dark:text-white leading-none mb-1 group-hover:text-[#39A900] transition-colors">
                                                     {{ optional($p->elemento)->nombre ?? 'Elemento eliminado' }}
                                                 </p>
-                                                <p class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-tighter">
+                                                <p class="text-[10px] font-black text-slate-500 dark:text-slate-500 uppercase tracking-tighter">
                                                     {{ optional($p->elemento->categoria)->nombre ?? 'Sin categoría' }}
                                                 </p>
                                             </div>
                                         </div>
                                     </td>
                                     <td class="px-6 py-4 hidden md:table-cell">
-                                        <span class="text-[11px] font-mono font-bold text-slate-400 dark:text-slate-500 bg-slate-50 dark:bg-slate-800 px-2 py-0.5 rounded border border-slate-100 dark:border-slate-700">{{ optional($p->elemento)->codigo_sena ?? '—' }}</span>
+                                        <span class="text-[11px] font-mono font-bold text-slate-500 dark:text-slate-500 bg-slate-50 dark:bg-slate-800 px-2 py-0.5 rounded border border-slate-200 dark:border-slate-700">{{ optional($p->elemento)->codigo_sena ?? '—' }}</span>
                                     </td>
                                     <td class="px-6 py-4">
                                         <div class="flex flex-col gap-1">
@@ -132,7 +132,7 @@
                     <svg class="w-12 h-12 text-slate-200 dark:text-slate-800 transition-transform group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" /></svg>
                 </div>
                 <h3 class="text-xl font-black text-[#00324D] dark:text-white tracking-tighter uppercase mb-2">Sin solicitudes</h3>
-                <p class="text-slate-400 dark:text-slate-500 text-xs max-w-xs mx-auto mb-8">No tienes peticiones pendientes de revisión en este momento.</p>
+                <p class="text-slate-500 dark:text-slate-500 text-xs max-w-xs mx-auto mb-8">No tienes peticiones pendientes de revisión en este momento.</p>
                 <a href="{{ route('user.catalogo') }}" class="px-6 py-3 bg-[#39A900] text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-xl shadow-xl shadow-[#39A900]/10 transition-all active:scale-95">
                     Ver Catálogo
                 </a>

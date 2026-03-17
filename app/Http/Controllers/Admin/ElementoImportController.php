@@ -24,9 +24,15 @@ class ElementoImportController extends Controller
         ]);
 
         try {
-            Excel::import(new ElementoImport($request->categoria_id), $request->file('file'));
+            $import = new ElementoImport($request->categoria_id);
+            Excel::import($import, $request->file('file'));
+            
+            if ($import->rowsCreated === 0 && $import->rowsUpdated > 0) {
+                return back()->with('duplicate_db_alert', 'La base de datos ya se encuentra ingresada en el sistema.')->withInput();
+            }
+
             return redirect()->route('admin.elementos.index')
-                ->with('success', 'Elementos importados correctamente.');
+                ->with('success', "Elementos procesados: {$import->rowsCreated} importados nuevos.");
         } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
             $failures = $e->failures();
             $errors = [];

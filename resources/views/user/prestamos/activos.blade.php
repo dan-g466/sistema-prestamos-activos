@@ -7,60 +7,60 @@
                     <span class="w-1.5 h-1.5 rounded-full bg-[#39A900] animate-pulse"></span>
                     <span class="text-[9px] font-black text-[#39A900] uppercase tracking-widest">En tu Poder</span>
                 </div>
-                <h2 class="text-3xl font-black text-[#00324D] tracking-tighter uppercase">Préstamos Activos</h2>
-                <p class="text-slate-400 text-xs font-medium mt-1">Equipos bajo tu responsabilidad con fecha de entrega vigente o vencida.</p>
+                <h2 class="text-3xl font-black text-[#00324D] dark:text-white tracking-tighter uppercase">Préstamos Activos</h2>
+                <p class="text-slate-500 dark:text-slate-500 text-xs font-medium mt-1">Equipos bajo tu responsabilidad con fecha de entrega vigente o vencida.</p>
             </div>
             <div class="flex items-center gap-3">
-                 <div class="px-5 py-2.5 bg-white rounded-2xl border border-slate-100 shadow-sm flex items-center gap-3">
-                    <span class="text-[10px] font-black text-[#00324D] uppercase tracking-widest">Listado Real</span>
+                 <div class="px-5 py-2.5 bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm flex items-center gap-3">
+                    <span class="text-[10px] font-black text-[#00324D] dark:text-white uppercase tracking-widest">Listado Real</span>
                 </div>
             </div>
         </div>
 
         @if($prestamos->count() > 0)
             {{-- Listado Horizontal Premium --}}
-            <div class="bg-white rounded-[2.5rem] shadow-2xl shadow-slate-200/40 border border-slate-100 overflow-hidden animate-in fade-in slide-in-from-bottom-6 duration-1000 delay-200">
+            <div class="bg-white dark:bg-slate-900 rounded-[2.5rem] shadow-2xl shadow-slate-200/40 dark:shadow-none border border-slate-100 dark:border-slate-800 overflow-hidden animate-in fade-in slide-in-from-bottom-6 duration-1000 delay-200">
                 <div class="overflow-x-auto">
                     <table class="w-full text-left border-collapse">
                         <thead>
-                            <tr class="border-b border-slate-50 bg-slate-50/50">
-                                <th class="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Herramienta / Equipo</th>
-                                <th class="px-6 py-5 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] hidden md:table-cell">Placa SENA</th>
-                                <th class="px-6 py-5 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Tiempo de Uso</th>
-                                <th class="px-6 py-5 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Estado</th>
-                                <th class="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] text-right">Panel</th>
+                            <tr class="border-b border-slate-50 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50">
+                                <th class="px-8 py-5 text-[10px] font-black text-slate-500 dark:text-slate-500 uppercase tracking-[0.2em]">Herramienta / Equipo</th>
+                                <th class="px-6 py-5 text-[10px] font-black text-slate-500 dark:text-slate-500 uppercase tracking-[0.2em] hidden md:table-cell">Placa SENA</th>
+                                <th class="px-6 py-5 text-[10px] font-black text-slate-500 dark:text-slate-500 uppercase tracking-[0.2em]">Tiempo de Uso</th>
+                                <th class="px-6 py-5 text-[10px] font-black text-slate-500 dark:text-slate-500 uppercase tracking-[0.2em]">Estado</th>
+                                <th class="px-8 py-5 text-[10px] font-black text-slate-500 dark:text-slate-500 uppercase tracking-[0.2em] text-right">Panel</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-slate-50">
+                        <tbody class="divide-y divide-slate-50 dark:divide-slate-800">
                             @foreach ($prestamos as $p)
-                                <tr class="group hover:bg-emerald-50/30 transition-colors duration-300">
+                                <tr class="group hover:bg-emerald-50/30 dark:hover:bg-slate-800/50 transition-colors duration-300">
                                     <td class="px-8 py-4">
                                         <div class="flex items-center gap-4">
-                                            <div class="w-10 h-10 bg-slate-50 rounded-xl border border-slate-100 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                                            <div class="w-10 h-10 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-700 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
                                                 @if(optional($p->elemento)->imagen)
                                                     <img src="{{ asset('storage/' . $p->elemento->imagen) }}" class="w-7 h-7 object-contain">
                                                 @else
-                                                    <svg class="w-5 h-5 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+                                                    <svg class="w-5 h-5 text-slate-400 dark:text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
                                                 @endif
                                             </div>
                                             <div>
-                                                <p class="text-[13px] font-black text-[#00324D] leading-none mb-1 group-hover:text-[#39A900] transition-colors">
+                                                <p class="text-[13px] font-black text-[#00324D] dark:text-white leading-none mb-1 group-hover:text-[#39A900] transition-colors">
                                                     {{ optional($p->elemento)->nombre ?? 'Elemento eliminado' }}
                                                 </p>
-                                                <p class="text-[10px] font-black text-slate-400 uppercase tracking-tighter">
+                                                <p class="text-[10px] font-black text-slate-500 dark:text-slate-500 uppercase tracking-tighter">
                                                     {{ optional($p->elemento->categoria)->nombre ?? 'Sin categoría' }}
                                                 </p>
                                             </div>
                                         </div>
                                     </td>
                                     <td class="px-6 py-4 hidden md:table-cell">
-                                        <span class="text-[11px] font-mono font-bold text-slate-400 bg-slate-50 px-2 py-0.5 rounded border border-slate-100">{{ optional($p->elemento)->codigo_sena ?? '—' }}</span>
+                                        <span class="text-[11px] font-mono font-bold text-slate-500 dark:text-slate-500 bg-slate-50 dark:bg-slate-800 px-2 py-0.5 rounded border border-slate-200 dark:border-slate-700">{{ optional($p->elemento)->codigo_sena ?? '—' }}</span>
                                     </td>
                                     <td class="px-6 py-4">
                                         <div class="flex flex-col gap-1">
                                             <div class="flex items-center gap-2">
-                                                <span class="text-[8px] font-black text-slate-300 uppercase w-8">Entrega:</span>
-                                                <span class="text-[10px] font-bold {{ $p->estado === 'Vencido' ? 'text-rose-500 animate-pulse' : 'text-[#00324D]' }}">
+                                                <span class="text-[8px] font-black text-slate-400 dark:text-slate-500 uppercase w-8">Entrega:</span>
+                                                <span class="text-[10px] font-bold {{ $p->estado === 'Vencido' ? 'text-rose-500 animate-pulse' : 'text-[#00324D] dark:text-slate-300' }}">
                                                     {{ $p->fecha_devolucion_esperada ? $p->fecha_devolucion_esperada->format('d/m/Y h:i A') : 'Error' }}
                                                 </span>
                                             </div>
@@ -68,7 +68,7 @@
                                     </td>
                                     <td class="px-6 py-4">
                                         @php
-                                            $style = $p->estado === 'Vencido' ? 'bg-rose-50 text-rose-600 border-rose-100' : 'bg-green-50 text-[#39A900] border-green-100';
+                                            $style = $p->estado === 'Vencido' ? 'bg-rose-50 dark:bg-rose-900/20 text-rose-600 dark:text-rose-400 border-rose-100 dark:border-rose-900/30' : 'bg-green-50 dark:bg-green-900/20 text-[#39A900] dark:text-green-400 border-green-100 dark:border-green-900/30';
                                         @endphp
                                         <span class="px-2.5 py-1 {{ $style }} border rounded-full text-[8px] font-black uppercase tracking-widest inline-flex items-center gap-1.5">
                                             <span class="w-1 h-1 rounded-full bg-current animate-pulse"></span>
@@ -76,7 +76,7 @@
                                         </span>
                                     </td>
                                     <td class="px-8 py-4 text-right">
-                                        <a href="{{ route('user.prestamos.show', $p) }}" class="inline-flex items-center gap-2 px-4 py-2 bg-[#00324D] text-white text-[9px] font-black uppercase tracking-widest rounded-xl hover:bg-[#39A900] hover:shadow-lg transition-all active:scale-95 group/btn">
+                                        <a href="{{ route('user.prestamos.show', $p) }}" class="inline-flex items-center gap-2 px-4 py-2 bg-[#00324D] dark:bg-slate-800 text-white text-[9px] font-black uppercase tracking-widest rounded-xl hover:bg-[#39A900] dark:hover:bg-slate-700 hover:shadow-lg transition-all active:scale-95 group/btn border border-transparent dark:border-slate-700">
                                             Detallado
                                             <svg class="w-3.5 h-3.5 group-hover/btn:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M13 7l5 5-5 5M6 7l5 5-5 5"/></svg>
                                         </a>
@@ -96,12 +96,12 @@
         @else
             {{-- Estado Vacío --}}
             <div class="flex flex-col items-center justify-center py-24 text-center animate-in fade-in duration-1000">
-                <div class="w-24 h-24 bg-slate-50 rounded-[2.5rem] flex items-center justify-center mb-6 border border-slate-100 shadow-inner group relative">
+                <div class="w-24 h-24 bg-slate-50 dark:bg-slate-900 rounded-[2.5rem] flex items-center justify-center mb-6 border border-slate-100 dark:border-slate-800 shadow-inner group relative">
                     <div class="absolute inset-0 bg-[#39A900] rounded-[3rem] blur-2xl opacity-0 group-hover:opacity-10 transition-opacity"></div>
-                    <svg class="w-12 h-12 text-slate-200 transition-transform group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" /></svg>
+                    <svg class="w-12 h-12 text-slate-200 dark:text-slate-800 transition-transform group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" /></svg>
                 </div>
-                <h3 class="text-xl font-black text-[#00324D] tracking-tighter uppercase mb-2">Sin equipos activos</h3>
-                <p class="text-slate-400 text-xs max-w-xs mx-auto mb-8">No tienes herramientas en uso actualmente. ¿Confirmaste ya tu solicitud en almacén?</p>
+                <h3 class="text-xl font-black text-[#00324D] dark:text-white tracking-tighter uppercase mb-2">Sin equipos activos</h3>
+                <p class="text-slate-500 dark:text-slate-500 text-xs max-w-xs mx-auto mb-8">No tienes herramientas en uso actualmente. ¿Confirmaste ya tu solicitud en almacén?</p>
                 <a href="{{ route('user.catalogo') }}" class="px-6 py-3 bg-[#39A900] text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-xl shadow-xl shadow-[#39A900]/10 transition-all active:scale-95">
                     Solicitar Herramienta
                 </a>

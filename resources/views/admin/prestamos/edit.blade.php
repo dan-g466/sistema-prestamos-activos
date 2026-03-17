@@ -10,7 +10,7 @@
         </div>
         <div class="flex items-center gap-3">
             <a href="{{ route('admin.prestamos.show', $prestamo) }}" 
-               class="flex items-center gap-2 px-4 py-2 bg-slate-50 text-slate-600 rounded-xl hover:bg-slate-100 transition-all group border border-slate-100">
+               class="flex items-center gap-2 px-4 py-2 bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 transition-all group border border-slate-100 dark:border-slate-700">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
@@ -18,8 +18,8 @@
                 <span class="text-[9px] font-black uppercase tracking-widest">Ver Detalle</span>
             </a>
             <a href="{{ route('admin.prestamos.index') }}" 
-               class="flex items-center gap-2 text-slate-400 hover:text-slate-600 transition-colors group">
-                <div class="p-2 rounded-xl bg-slate-50 group-hover:bg-slate-100 transition-colors border border-slate-100">
+               class="flex items-center gap-2 text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 transition-colors group">
+                <div class="p-2 rounded-xl bg-slate-50 dark:bg-slate-800 group-hover:bg-slate-100 dark:group-hover:bg-slate-700 transition-colors border border-slate-100 dark:border-slate-700">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
                     </svg>

@@ -303,4 +303,21 @@
             </div>
         </div>
     </div>
+
+    @if(session('duplicate_db_alert'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    title: 'Base de Datos Existente',
+                    text: '{{ session('duplicate_db_alert') }}',
+                    icon: 'info',
+                    confirmButtonText: 'Entendido',
+                    confirmButtonColor: '#39A900',
+                    customClass: {
+                        confirmButton: 'swal2-confirm',
+                    }
+                });
+            });
+        </script>
+    @endif
 </x-admin-layout>

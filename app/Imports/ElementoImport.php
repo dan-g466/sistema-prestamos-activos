@@ -13,6 +13,8 @@ use Illuminate\Support\Str;
 class ElementoImport implements ToModel, WithHeadingRow, WithValidation, SkipsEmptyRows
 {
     protected $categoria_id;
+    public $rowsCreated = 0;
+    public $rowsUpdated = 0;
 
     public function __construct($categoria_id = null)
     {
@@ -101,9 +103,11 @@ class ElementoImport implements ToModel, WithHeadingRow, WithValidation, SkipsEm
                 'estado' => $estado,
                 'categoria_id' => $categoria_id,
             ]);
+            $this->rowsUpdated++;
             return null; // Retornamos null porque ya lo actualizamos manualmente
         }
 
+        $this->rowsCreated++;
         return new Elemento([
             'nombre'       => $nombre,
             'descripcion'  => $descripcion,
@@ -118,8 +122,8 @@ class ElementoImport implements ToModel, WithHeadingRow, WithValidation, SkipsEm
         return [
             // Solo requerimos nombre si hay código, y viceversa. 
             // Esto permite saltar filas que no son elementos (como encabezados repetidos o vacíos)
-            'nombre' => 'required_with:codigo_sena|string|max:255',
-            'codigo_sena' => 'required_with:nombre|string|max:255',
+            'nombre' => 'required_with:codigo_sena|max:255',
+            'codigo_sena' => 'required_with:nombre|max:255',
         ];
     }
 
@@ -155,9 +159,12 @@ class ElementoImport implements ToModel, WithHeadingRow, WithValidation, SkipsEm
             $data['nombre'] = $data['descripcion'];
         }
 
-        // Valores por defecto finales para compatibilidad
-        $data['nombre'] = $data['nombre'] ?? $data['elemento'] ?? null;
-        $data['codigo_sena'] = $data['codigo_sena'] ?? $data['placa'] ?? null;
+        // Valores por defecto finales para compatibilidad y cast a string seguro
+        $nombreFinal = $data['nombre'] ?? $data['elemento'] ?? null;
+        $codigoFinal = $data['codigo_sena'] ?? $data['placa'] ?? null;
+
+        $data['nombre'] = $nombreFinal !== null ? (string) $nombreFinal : null;
+        $data['codigo_sena'] = $codigoFinal !== null ? (string) $codigoFinal : null;
         
         return $data;
     }
